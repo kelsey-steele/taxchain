@@ -10,7 +10,7 @@ contract User {
         uint[] salaryAmount;
     }
 
-    event SalaryAdded(uint _month, address _companyId, uint _amount);
+    event SalaryAdded(address userId, uint month, address companyId, uint amount);
 
     mapping (uint=>MonthlySalary) monthlySalaries; //month -> MonthlySalary
 
@@ -37,7 +37,7 @@ contract User {
         MonthlySalary storage monthlySalary = monthlySalaries[_month];
         monthlySalary.companyId.push(_companyId);
         monthlySalary.salaryAmount.push(_amount);
-        emit SalaryAdded(_month, _companyId, _amount);
+        emit SalaryAdded(userId, _month, _companyId, _amount);
     }
 
     function addSalary(uint _month, address _companyId, uint _amount) public companyAccepted(_companyId) validMonth(_month) {
