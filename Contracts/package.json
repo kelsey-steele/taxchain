@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@openzeppelin/test-helpers": "^0.5.5",
     "@truffle/hdwallet-provider": "^1.0.34",
+    "chai": "^4.2.0",
     "truffle-hdwallet-provider": "^1.0.17"
   }
 }
