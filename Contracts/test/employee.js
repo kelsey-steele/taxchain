@@ -14,7 +14,7 @@ contract("Employee", (accounts) => {
     before(async () => {
     });
     beforeEach(async () => {
-        contractInstance = await Employee.new({from: employee1});
+        contractInstance = await Employee.new(employee1);
         await contractInstance.acceptCompany(employer1, {from: employee1});
         await contractInstance.acceptCompany(employer2, {from: employee1});
     });
@@ -36,7 +36,7 @@ contract("Employee", (accounts) => {
         expect(result2.receipt.status).to.equal(true);
         expect(result2.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount2));
 
-        const totalSalaryResult = await contractInstance.totalIncome();
+        const totalSalaryResult = await contractInstance.getTotalIncome();
         expect(totalSalaryResult).to.be.bignumber.equal(new BN(januaryAmount1+januaryAmount2))
 
         const januarySalaryEmployersResult = await contractInstance.getCompanyIdsForMonth(1);
@@ -47,7 +47,7 @@ contract("Employee", (accounts) => {
         expect(januarySalarySalariesResult[1]).to.be.bignumber.equal(new BN(januaryAmount2));
     })
     it("No salary should have been added", async() => {
-        const totalSalaryResult = await contractInstance.totalIncome();
+        const totalSalaryResult = await contractInstance.getTotalIncome();
         expect(totalSalaryResult).to.be.bignumber.equal(new BN(0))
 
         const januarySalaryEmployersResult = await contractInstance.getCompanyIdsForMonth(1);
