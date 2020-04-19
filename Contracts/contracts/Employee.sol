@@ -1,7 +1,10 @@
 pragma solidity >=0.5.0 <0.6.0;
+import "./lib/safemath.sol";
 
-contract User {
-    address userId;
+contract Employee {
+    using SafeMath for uint;
+
+    address employeeId;
     uint public totalIncome;
     mapping(address=>bool) companyAdded;
 
@@ -10,12 +13,12 @@ contract User {
         uint[] salaryAmount;
     }
 
-    event SalaryAdded(address userId, uint month, address companyId, uint amount);
+    event SalaryAdded(address employeeId, uint month, address companyId, uint amount);
 
     mapping (uint=>MonthlySalary) monthlySalaries; //month -> MonthlySalary
 
     constructor() public {
-        userId = msg.sender;
+        employeeId = msg.sender;
     }
 
     modifier companyAccepted(address _companyId) {
@@ -28,16 +31,16 @@ contract User {
     }
 
     function acceptCompany(address _companyId) public {
-        require(msg.sender == userId, "Msg Sender is not user");
+        require(msg.sender == employeeId, "Msg Sender is not user");
         companyAdded[_companyId] = true;
     }
 
     function _addSalaryToIncome(uint _month, address _companyId, uint _amount) private {
-        totalIncome = totalIncome + _amount;
+        totalIncome = totalIncome.add(_amount);
         MonthlySalary storage monthlySalary = monthlySalaries[_month];
         monthlySalary.companyId.push(_companyId);
         monthlySalary.salaryAmount.push(_amount);
-        emit SalaryAdded(userId, _month, _companyId, _amount);
+        emit SalaryAdded(employeeId, _month, _companyId, _amount);
     }
 
     function addSalary(uint _month, address _companyId, uint _amount) public companyAccepted(_companyId) validMonth(_month) {

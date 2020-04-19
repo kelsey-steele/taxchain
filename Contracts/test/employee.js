@@ -1,11 +1,11 @@
-const User = artifacts.require("User");
+const Employee = artifacts.require("Employee");
 const utils = require("./helpers/utils");
 const { BN, time } = require('@openzeppelin/test-helpers');
 var expect = require('chai').expect;
 var assert = require('chai').assert;
 
 
-contract("User", (accounts) => {
+contract("Employee", (accounts) => {
     let [employee1, employer1, employer2, employer3] = accounts;
     let contractInstance;
     let januaryAmount1 = 300;
@@ -14,7 +14,7 @@ contract("User", (accounts) => {
     before(async () => {
     });
     beforeEach(async () => {
-        contractInstance = await User.new({from: employee1});
+        contractInstance = await Employee.new({from: employee1});
         await contractInstance.acceptCompany(employer1, {from: employee1});
         await contractInstance.acceptCompany(employer2, {from: employee1});
     });
