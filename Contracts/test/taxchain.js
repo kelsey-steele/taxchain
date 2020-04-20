@@ -14,35 +14,103 @@ contract("TaxChain", (accounts) => {
 
     before(async () => {
     });
+
     beforeEach(async () => {
         contractTaxChain = await TaxChain.new();
         
-        await contractTaxChain.registerEmployee({from: employee1});
+        await contractTaxChain.registerEmployee(employee1, {from: employee1});
+        await contractTaxChain.registerEmployee(employee2, {from: employee2});
+        await contractTaxChain.registerEmployer(employer1, {from: employer1});
+        await contractTaxChain.registerEmployer(employer2, {from: employer2});
 
-        await contractTaxChain.registerEmployee({from: employee2});
-        await contractTaxChain.registerEmployer({from: employer1});
-        await contractTaxChain.registerEmployer({from: employer2});
-
-        await contractTaxChain.employeeAcceptEmployer(employer1, {from: employee1});
-        await contractTaxChain.employeeAcceptEmployer(employer2, {from: employee1});
+        await contractTaxChain.employeeAcceptEmployer(employee1, employer1, {from: employee1});
+        await contractTaxChain.employeeAcceptEmployer(employee1, employer2, {from: employee1});
         
-        await contractTaxChain.employeeAcceptEmployer(employer1, {from: employee2});
+        await contractTaxChain.employeeAcceptEmployer(employee2, employer1, {from: employee2});
     });
 
     afterEach(async () => {
     });
 
     it("Employer1 should be able to add salary for Employee1", async() => {
-        await contractTaxChain.addEmployeeSalary(employee1, 1, januaryAmount1, {from: employer1});
-        const result = contractTaxChain.getEmployeeTotalIncome();
-        expect(result.receipt.status).to.equal(true);
-        expect(result).to.be.bignumber.equal(new BN(januaryAmount1))
+        const result1 = await contractTaxChain.addEmployeeSalary(employee1, employer1, 1, januaryAmount1, {from: employer1});
+        expect(result1.receipt.status).to.equal(true);
+        expect(result1.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
+
+        const result2 = await contractTaxChain.getEmployeeTotalIncome(employee1);
+        expect(result2).to.be.bignumber.equal(new BN(januaryAmount1));
     })
 
-    // it("Employer1 should be able to add salary", async () => {
-    //     const result = await contractInstance.addSalary(1, employer1, januaryAmount1, {from: employer1});
-    //     expect(result.receipt.status).to.equal(true);
-    //     expect(result.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
+    it("Employer1 and Employer2 should add salary to same month", async() => {
+        const result1 = await contractTaxChain.addEmployeeSalary(employee1, employer1, 1, januaryAmount1, {from: employer1});
+        expect(result1.receipt.status).to.equal(true);
+        expect(result1.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
 
-    // })
+        const result2 = await contractTaxChain.addEmployeeSalary(employee1, employer2, 1, januaryAmount2, {from: employer2});
+        expect(result2.receipt.status).to.equal(true);
+        expect(result2.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result2.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount2));
+
+        const result3 = await contractTaxChain.getEmployeeTotalIncome(employee1);
+        expect(result3).to.be.bignumber.equal(new BN(januaryAmount1+januaryAmount2));
+    })
+
+    it("Employer1 and Employer2 should add salary to different month", async() => {
+        const result1 = await contractTaxChain.addEmployeeSalary(employee1, employer1, 1, januaryAmount1, {from: employer1});
+        expect(result1.receipt.status).to.equal(true);
+        expect(result1.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
+
+        const result2 = await contractTaxChain.addEmployeeSalary(employee1, employer2, 2, februraryAmount1, {from: employer2});
+        expect(result2.receipt.status).to.equal(true);
+        expect(result2.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result2.logs[0].args.amount).to.be.bignumber.equal(new BN(februraryAmount1));
+
+        const result3 = await contractTaxChain.getEmployeeTotalIncome(employee1);
+        expect(result3).to.be.bignumber.equal(new BN(januaryAmount1+februraryAmount1));
+    })
+
+    it("Employer1 gives salary to different employees", async() => {
+        const result1 = await contractTaxChain.addEmployeeSalary(employee1, employer1, 1, januaryAmount1, {from: employer1});
+        expect(result1.receipt.status).to.equal(true);
+        expect(result1.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
+
+        const result2 = await contractTaxChain.addEmployeeSalary(employee2, employer1, 2, februraryAmount1, {from: employer1});
+        expect(result2.receipt.status).to.equal(true);
+        expect(result2.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result2.logs[0].args.amount).to.be.bignumber.equal(new BN(februraryAmount1));
+
+        const result3 = await contractTaxChain.getEmployeeTotalIncome(employee1);
+        expect(result3).to.be.bignumber.equal(new BN(januaryAmount1))
+
+        const result4 = await contractTaxChain.getEmployeeTotalIncome(employee2);
+        expect(result4).to.be.bignumber.equal(new BN(februraryAmount1))
+    })
+
+    it("Employer1 and Employer2 should be able to add salary to same month", async() => {
+        const result1 = await contractTaxChain.addEmployeeSalary(employee1, employer1, 1, januaryAmount1, {from: employer1});
+        expect(result1.receipt.status).to.equal(true);
+        expect(result1.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
+
+        const result2 = await contractTaxChain.addEmployeeSalary(employee1, employer2, 1, januaryAmount2, {from: employer2});
+        expect(result2.receipt.status).to.equal(true);
+        expect(result2.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result2.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount2));
+
+        const result3 = await contractTaxChain.getEmployeeTotalIncome(employee1);
+        expect(result3).to.be.bignumber.equal(new BN(januaryAmount1+januaryAmount2));
+
+        const result4 = await contractTaxChain.getEmployerIdsForEmployeeAndMonth(employee1, 1);
+        expect(result4).to.be.eql([employer1, employer2]);
+        expect(result4.length).to.be.equal(2);
+
+        const result5 = await contractTaxChain.getSalaryAmountsForEmployeeAndMonth(employee1, 1);
+        expect(result5.length).to.be.equal(2);
+        expect(result5[0]).to.be.bignumber.equal(new BN(januaryAmount1));
+        expect(result5[1]).to.be.bignumber.equal(new BN(januaryAmount2));
+    })
 })

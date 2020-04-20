@@ -15,8 +15,8 @@ contract("Employee", (accounts) => {
     });
     beforeEach(async () => {
         contractInstance = await Employee.new();
-        await contractInstance.acceptCompany(employer1, {from: employee1});
-        await contractInstance.acceptCompany(employer2, {from: employee1});
+        await contractInstance.acceptCompany(employee1, employer1, {from: employee1});
+        await contractInstance.acceptCompany(employee1, employer2, {from: employee1});
     });
     afterEach(async () => {
     });
