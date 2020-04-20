@@ -14,7 +14,7 @@ contract("Employee", (accounts) => {
     before(async () => {
     });
     beforeEach(async () => {
-        contractInstance = await Employee.new(employee1);
+        contractInstance = await Employee.new();
         await contractInstance.acceptCompany(employer1, {from: employee1});
         await contractInstance.acceptCompany(employer2, {from: employee1});
     });
@@ -22,38 +22,38 @@ contract("Employee", (accounts) => {
     });
 
     it("Employer1 should be able to add salary", async () => {
-        const result = await contractInstance.addSalary(1, employer1, januaryAmount1, {from: employer1});
+        const result = await contractInstance.addSalary(employee1, 1, employer1, januaryAmount1, {from: employer1});
         expect(result.receipt.status).to.equal(true);
         expect(result.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
 
     })
     it("Employer1 & Employer2 should be able to add salary", async () => {
-        const result1 = await contractInstance.addSalary(1, employer1, januaryAmount1, {from: employer1});
+        const result1 = await contractInstance.addSalary(employee1, 1, employer1, januaryAmount1, {from: employer1});
         expect(result1.receipt.status).to.equal(true);
         expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
 
-        const result2 = await contractInstance.addSalary(1, employer2, januaryAmount2, {from: employer2});
+        const result2 = await contractInstance.addSalary(employee1, 1, employer2, januaryAmount2, {from: employer2});
         expect(result2.receipt.status).to.equal(true);
         expect(result2.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount2));
 
-        const totalSalaryResult = await contractInstance.getTotalIncome();
+        const totalSalaryResult = await contractInstance.getTotalIncome(employee1);
         expect(totalSalaryResult).to.be.bignumber.equal(new BN(januaryAmount1+januaryAmount2))
 
-        const januarySalaryEmployersResult = await contractInstance.getCompanyIdsForMonth(1);
+        const januarySalaryEmployersResult = await contractInstance.getEmployerIdsForEmployeeAndMonth(employee1, 1);
         expect(januarySalaryEmployersResult).to.be.eql([employer1, employer2])
 
-        const januarySalarySalariesResult = await contractInstance.getSalaryAmountsForMonth(1);
+        const januarySalarySalariesResult = await contractInstance.getSalaryAmountsForEmployeeAndMonth(employee1, 1);
         expect(januarySalarySalariesResult[0]).to.be.bignumber.equal(new BN(januaryAmount1));
         expect(januarySalarySalariesResult[1]).to.be.bignumber.equal(new BN(januaryAmount2));
     })
     it("No salary should have been added", async() => {
-        const totalSalaryResult = await contractInstance.getTotalIncome();
+        const totalSalaryResult = await contractInstance.getTotalIncome(employee1);
         expect(totalSalaryResult).to.be.bignumber.equal(new BN(0))
 
-        const januarySalaryEmployersResult = await contractInstance.getCompanyIdsForMonth(1);
+        const januarySalaryEmployersResult = await contractInstance.getEmployerIdsForEmployeeAndMonth(employee1, 1);
         expect(januarySalaryEmployersResult).to.be.eql([])
 
-        const januarySalarySalariesResult = await contractInstance.getSalaryAmountsForMonth(1);
+        const januarySalarySalariesResult = await contractInstance.getSalaryAmountsForEmployeeAndMonth(employee1, 1);
         expect(januarySalarySalariesResult).to.be.eql([]);
     })
 })
