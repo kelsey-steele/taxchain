@@ -1,0 +1,110 @@
+{
+  "contractName": "Common",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/C/Users/Joy/Documents/cs481/taxchain/Contracts/contracts/Common.sol\":\"Common\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Joy/Documents/cs481/taxchain/Contracts/contracts/Common.sol\":{\"keccak256\":\"0x8c57b5227dfe9235ff7229af40e3f868ee3e5aad74363d3bb9901184a9b597a5\",\"urls\":[\"bzz-raw://430c5b36d544dc095bc1fa3f6f60566e5f7c01d22a61e7065cd7ed4d044bb1a2\",\"dweb:/ipfs/QmR7kEn9pBXyc2awbncGRAysyPu3suatayDGR8RnVxr5Nu\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603e80601d6000396000f3fe6080604052600080fdfea265627a7a7231582093e7503c947552053fba664622d95b5ac8f2db1496317c7e413ff209c42ba9e664736f6c63430005100032",
+  "deployedBytecode": "0x6080604052600080fdfea265627a7a7231582093e7503c947552053fba664622d95b5ac8f2db1496317c7e413ff209c42ba9e664736f6c63430005100032",
+  "sourceMap": "35:225:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;35:225:0;;;;;;;",
+  "deployedSourceMap": "35:225:0:-;;;;;",
+  "source": "pragma solidity >=0.5.0 <0.6.0;\r\n\r\ncontract Common {\r\n    // event EntityRegistered(address _id, string entityType);\r\n    \r\n    // modifier validMonth(uint _month) {\r\n    //     require(_month >= 1 && _month <= 12, \"Invalid month\");\r\n    //     _;\r\n    // }\r\n}\r\n",
+  "sourcePath": "C:\\Users\\Joy\\Documents\\cs481\\taxchain\\Contracts\\contracts\\Common.sol",
+  "ast": {
+    "absolutePath": "/C/Users/Joy/Documents/cs481/taxchain/Contracts/contracts/Common.sol",
+    "exportedSymbols": {
+      "Common": [
+        2
+      ]
+    },
+    "id": 3,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".0",
+          "<",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:31:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 2,
+        "linearizedBaseContracts": [
+          2
+        ],
+        "name": "Common",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 3,
+        "src": "35:225:0"
+      }
+    ],
+    "src": "0:262:0"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/Joy/Documents/cs481/taxchain/Contracts/contracts/Common.sol",
+    "exportedSymbols": {
+      "Common": [
+        2
+      ]
+    },
+    "id": 3,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".0",
+          "<",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:31:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 2,
+        "linearizedBaseContracts": [
+          2
+        ],
+        "name": "Common",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 3,
+        "src": "35:225:0"
+      }
+    ],
+    "src": "0:262:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.23",
+  "updatedAt": "2020-04-20T17:46:44.236Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
