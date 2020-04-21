@@ -1,7 +1,8 @@
 pragma solidity >=0.5.0 <0.6.0;
 import "./Employee.sol";
+import "./IRS.sol";
 
-contract TaxChain is Employee{
+contract TaxChain is Employee, IRS {
     address[] private employeeIdList;
     address[] private employerIdList;
     
@@ -56,5 +57,13 @@ contract TaxChain is Employee{
     function addEmployeeSalary(address _employeeId, address _employerId, uint8 _month, uint _salaryAmount) public 
             employerExists(msg.sender) employeeExists(_employeeId) {
         addSalary(_employeeId, _month, _employerId, _salaryAmount);
+    }
+
+    function getEmployerIdsForEmployeeAndMonth(address _employeeId, uint _month) public view validMonth(_month) returns (address[] memory) {
+        return getEmployerIdsForEmployeeMonth(_employeeId, _month);
+    }
+
+    function getSalaryAmountsForEmployeeAndMonth(address _employeeId, uint _month) public view validMonth(_month) returns (uint[] memory) {
+        return getSalaryAmountsForEmployeeMonth(_employeeId, _month);
     }
 }
