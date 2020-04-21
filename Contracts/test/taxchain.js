@@ -26,7 +26,7 @@ contract("TaxChain", (accounts) => {
         await contractTaxChain.employeeAcceptEmployer(employee1, employer1, {from: employee1});
         await contractTaxChain.employeeAcceptEmployer(employee1, employer2, {from: employee1});
         
-        await contractTaxChain.employeeAcceptEmployer(employee2, employer1, {from: employee2});
+        await contractTaxChain.employeeAcceptEmployer(employee2, employer1, {from: employee2}); 
     });
 
     afterEach(async () => {
@@ -112,5 +112,38 @@ contract("TaxChain", (accounts) => {
         expect(result5.length).to.be.equal(2);
         expect(result5[0]).to.be.bignumber.equal(new BN(januaryAmount1));
         expect(result5[1]).to.be.bignumber.equal(new BN(januaryAmount2));
+    })
+    
+    it("List total income of all employees", async() => {
+        const result1 = await contractTaxChain.addEmployeeSalary(employee2, employer1, 1, januaryAmount1, {from: employer1});
+        expect(result1.receipt.status).to.equal(true);
+        expect(result1.logs[0].event).to.be.equal("SalaryAdded");
+        expect(result1.logs[0].args.amount).to.be.bignumber.equal(new BN(januaryAmount1));
+
+        await contractTaxChain.addEmployeeSalary(employee1, employer2, 1, januaryAmount1, {from: employer2});
+        await contractTaxChain.addEmployeeSalary(employee1, employer1, 2, februraryAmount1, {from: employer1});
+
+        const result3 = await contractTaxChain.getAllEmployeeList();
+        expect(result3).to.be.eql([employee1, employee2]);
+
+        const result4 = await contractTaxChain.getAllEmployeeTotalIncomeList();
+        expect(result4.length).to.be.equal(2);
+        expect(result4[0]).to.be.bignumber.equal(new BN(januaryAmount1+februraryAmount1));
+        expect(result4[1]).to.be.bignumber.equal(new BN(januaryAmount1));
+    })
+
+    it("Employee1 should be of Employee type", async() => {
+        const result = await contractTaxChain.getMessageSenderAddressType({from: employee1});
+        expect(result).to.be.equal("EMPLOYEE");
+    })
+    
+    it("Employer1 should be of Employer type", async() => {
+        const result = await contractTaxChain.getMessageSenderAddressType({from: employer1});
+        expect(result).to.be.equal("EMPLOYER");
+    })
+
+    it("IRS user should be of IRS type", async() => {
+        const result = await contractTaxChain.getMessageSenderAddressType({from: "0xA3dCb6c670a83Eb68C65Ecb8D6Dd6dfADBF429bE"});
+        expect(result).to.be.equal("IRS");
     })
 })

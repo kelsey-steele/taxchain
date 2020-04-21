@@ -5,6 +5,7 @@ import "./IRS.sol";
 contract TaxChain is Employee, IRS {
     address[] private employeeIdList;
     address[] private employerIdList;
+    uint[] private employeeTotalIncomeList;
     
     mapping(address=>bool) private addressToEmployeeExists;
     mapping(address=>bool) private addressToEmployerExists;
@@ -30,6 +31,7 @@ contract TaxChain is Employee, IRS {
         require(_newEmployeeId == msg.sender, "Employee himself did not send the message");
         
         employeeIdList.push(_newEmployeeId);
+        employeeTotalIncomeList.push(0);
         addressToEmployeeExists[_newEmployeeId] = true;
         
         emit EmployeeRegistered(_newEmployeeId);
@@ -59,11 +61,67 @@ contract TaxChain is Employee, IRS {
         addSalary(_employeeId, _month, _employerId, _salaryAmount);
     }
 
-    function getEmployerIdsForEmployeeAndMonth(address _employeeId, uint _month) public view validMonth(_month) returns (address[] memory) {
+    function getAllEmployeeList() public view returns (address[] memory) {
+        return employeeIdList;
+    }
+
+    function getAllEmployeeTotalIncomeList() public view returns (uint[] memory) {
+        uint[] memory incomeList = employeeTotalIncomeList;
+        for(uint i=0;i<employeeIdList.length;i++){
+            incomeList[i] = getEmployeeTotalIncome(employeeIdList[i]);
+        }
+        return incomeList;
+    }
+
+    function getEmployerIdsForEmployeeAndMonth(address _employeeId, uint _month) public view 
+                validMonth(_month) canAccessEmployeeInfo(msg.sender, _employeeId) returns (address[] memory) {
         return getEmployerIdsForEmployeeMonth(_employeeId, _month);
     }
 
-    function getSalaryAmountsForEmployeeAndMonth(address _employeeId, uint _month) public view validMonth(_month) returns (uint[] memory) {
+    function getSalaryAmountsForEmployeeAndMonth(address _employeeId, uint _month) public view 
+                validMonth(_month) canAccessEmployeeInfo(msg.sender, _employeeId) returns (uint[] memory) {
         return getSalaryAmountsForEmployeeMonth(_employeeId, _month);
     }
+
+
+
+    modifier canAccessEmployeeInfo(address _fromAddress, address _targetInfoAddress) {
+        require(isMessageFromEmployeeOrIrs(_fromAddress, _targetInfoAddress) == true,
+                "Employee information is not accessible to Message sender.");
+                _;
+    }
+
+    function registerIRS(address _newIrsId) public {
+        addNewIrsId(_newIrsId);
+    }
+
+    function isMessageFromEmployeeOrIrs(address _fromAddress, address _targetInfoAddress) private view returns (bool) {
+        if(isAddressFromIrs(_fromAddress) == true)
+            return true;
+        if(_fromAddress != _targetInfoAddress)
+            return false;
+        if(addressToEmployeeExists[_fromAddress] == false)
+            return false;
+        return true;
+    }
+
+    function getMessageSenderAddressType() public view returns (string memory) {
+        address _address = msg.sender;
+        if(isAddressFromIrs(_address) == true)
+            return "IRS";
+        if(addressToEmployeeExists[_address] == true)
+            return "EMPLOYEE";
+        if(addressToEmployerExists[_address] == true)
+            return "EMPLOYER";
+        return "NONE";
+    }
+
+    function getTaxRate() public view returns (uint) {
+        return getIRSTaxRate();
+    }
+
+    function changeTaxRate(uint _newRate) public {
+        changeIRSTaxRate(_newRate);
+    }
+
 }
