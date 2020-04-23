@@ -1,0 +1,156 @@
+C:\Users\Joy\Documents\cs481\taxchain\Contracts>truffle migrate --network rinkeby
+
+Compiling your contracts...
+===========================
+> Compiling .\contracts\Employee.sol
+> Compiling .\contracts\IRS.sol
+> Compiling .\contracts\Migrations.sol
+> Compiling .\contracts\TaxChain.sol
+> Compiling .\contracts\lib\safemath.sol
+> Artifacts written to C:\Users\Joy\Documents\cs481\taxchain\Contracts\build\contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'rinkeby-fork'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > block number:        6367525
+   > block timestamp:     1587668282
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.227442061
+   > gas used:            149175
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00029835 ETH
+
+   -------------------------------------
+   > Total cost:          0.00029835 ETH
+
+
+2_taxchain_migration.js
+=======================
+
+   Deploying 'TaxChain'
+   --------------------
+   > block number:        6367527
+   > block timestamp:     1587668298
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.223225479
+   > gas used:            2080950
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0041619 ETH
+
+   -------------------------------------
+   > Total cost:           0.0041619 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.00446025 ETH
+
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0xd51bcc3f4d1d94ecdf6ed679f98d8fc29be0ce2b9b3e16acbf390d2534da34bb
+   > Blocks: 0            Seconds: 12
+   > contract address:    0x87ADE624CF4a33c9BCa4Ee09c073300817fdA851
+   > block number:        6367526
+   > block timestamp:     1587668317
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.224456911
+   > gas used:            164175
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0032835 ETH
+
+
+   ⠧ Saving migration to chain.Error: Invalid JSON RPC response: ""
+    at Object.InvalidResponse (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\web3-core-helpers\src\errors.js:42:16)
+    at XMLHttpRequest.request.onreadystatechange (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\web3-providers-http\src\index.js:92:32)
+    at XMLHttpRequestEventTarget.dispatchEvent (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request-event-target.ts:44:13)
+    at XMLHttpRequest._setReadyState (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:219:8)
+    at XMLHttpRequest._onHttpRequestError (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:379:8)
+    at ClientRequest.<anonymous> (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:266:37)
+    at ClientRequest.emit (events.js:321:20)
+    at TLSSocket.socketErrorListener (_http_client.js:426:9)
+    at TLSSocket.emit (events.js:321:20)
+    at emitErrorNT (internal/streams/destroy.js:92:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+    at processTicksAndRejections (internal/process/task_queues.js:84:21)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:           0.0032835 ETH
+
+
+2_taxchain_migration.js
+=======================
+
+   Deploying 'TaxChain'
+   --------------------
+   > transaction hash:    0xf14168de0611857b8e3cf34ea3ea2b14bf6698e4caa1ca4e6c244a79d2d307e2
+   > Blocks: 0            Seconds: 12
+   > contract address:    0xEeb3e81df3Ad32FFF8fC288c1115e312bA62BaFA
+   > block number:        6367528
+   > block timestamp:     1587668347
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.180791091
+   > gas used:            2140950
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.042819 ETH
+
+
+   ⠏ Saving migration to chain.Error: Invalid JSON RPC response: ""
+    at Object.InvalidResponse (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\web3-core-helpers\src\errors.js:42:16)
+    at XMLHttpRequest.request.onreadystatechange (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\web3-providers-http\src\index.js:92:32)
+    at XMLHttpRequestEventTarget.dispatchEvent (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request-event-target.ts:44:13)
+    at XMLHttpRequest._setReadyState (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:219:8)
+    at XMLHttpRequest._onHttpRequestError (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:379:8)
+    at ClientRequest.<anonymous> (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:266:37)
+    at ClientRequest.emit (events.js:321:20)
+    at TLSSocket.socketErrorListener (_http_client.js:426:9)
+    at TLSSocket.emit (events.js:321:20)
+    at emitErrorNT (internal/streams/destroy.js:92:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+    at processTicksAndRejections (internal/process/task_queues.js:84:21)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:            0.042819 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.0461025 ETH
+
+-------------------------------------------------------------------------------------------------------------------------
+Contract address = 0xEeb3e81df3Ad32FFF8fC288c1115e312bA62BaFA
+Oneclick click dapp url = https://oneclickdapp.com/voyage-analog/
