@@ -11234,9 +11234,203 @@
     "name": "solc",
     "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "4": {
+      "events": {
+        "0x153ea0ab2fbd5d528e3c5edd58c6f84f337d61d4beb80f6a58372d2bbb2f713d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employeeId",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employerId",
+              "type": "address"
+            }
+          ],
+          "name": "EmployeeAcceptedEmployer",
+          "type": "event"
+        },
+        "0x0db3a4aa2c7c447948fc41791351128418b0b95d158de36cf07dfab93776ef10": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employeeId",
+              "type": "address"
+            }
+          ],
+          "name": "EmployeeRegistered",
+          "type": "event"
+        },
+        "0x320f0bf1a83ce6d92e80948ac3800b41c7ca41667fc5e5ce639b73129dff3bdb": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employerId",
+              "type": "address"
+            }
+          ],
+          "name": "EmployerRegistered",
+          "type": "event"
+        },
+        "0x487859ec440b063a8bf59896bf5657c341cf68cee27bdb93326cca4fc4a4be74": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employeeId",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "month",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employerId",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "SalaryAdded",
+          "type": "event"
+        },
+        "0xbe89dc2f9769e9896808a0f0983380fed3225e0784b99b98d3eec9ccb5018528": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "newRate",
+              "type": "uint256"
+            }
+          ],
+          "name": "TaxRateChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xEeb3e81df3Ad32FFF8fC288c1115e312bA62BaFA",
+      "transactionHash": "0xf14168de0611857b8e3cf34ea3ea2b14bf6698e4caa1ca4e6c244a79d2d307e2"
+    },
+    "5777": {
+      "events": {
+        "0x153ea0ab2fbd5d528e3c5edd58c6f84f337d61d4beb80f6a58372d2bbb2f713d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employeeId",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employerId",
+              "type": "address"
+            }
+          ],
+          "name": "EmployeeAcceptedEmployer",
+          "type": "event"
+        },
+        "0x0db3a4aa2c7c447948fc41791351128418b0b95d158de36cf07dfab93776ef10": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employeeId",
+              "type": "address"
+            }
+          ],
+          "name": "EmployeeRegistered",
+          "type": "event"
+        },
+        "0x320f0bf1a83ce6d92e80948ac3800b41c7ca41667fc5e5ce639b73129dff3bdb": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employerId",
+              "type": "address"
+            }
+          ],
+          "name": "EmployerRegistered",
+          "type": "event"
+        },
+        "0x487859ec440b063a8bf59896bf5657c341cf68cee27bdb93326cca4fc4a4be74": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employeeId",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "month",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "employerId",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "SalaryAdded",
+          "type": "event"
+        },
+        "0xbe89dc2f9769e9896808a0f0983380fed3225e0784b99b98d3eec9ccb5018528": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "newRate",
+              "type": "uint256"
+            }
+          ],
+          "name": "TaxRateChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x067785627B406EDD222a477e2518cb4799476dbf",
+      "transactionHash": "0xbd94576970e6215099ba1d2a2161c435524329a8d6338a527c28cd5229f50b7b"
+    }
+  },
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-04-21T06:37:37.703Z",
+  "updatedAt": "2020-04-23T18:59:22.106Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
