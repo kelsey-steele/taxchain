@@ -890,6 +890,7 @@
     "4": {
       "events": {},
       "links": {},
+<<<<<<< Updated upstream
       "address": "0x87ADE624CF4a33c9BCa4Ee09c073300817fdA851",
       "transactionHash": "0xd51bcc3f4d1d94ecdf6ed679f98d8fc29be0ce2b9b3e16acbf390d2534da34bb"
     },
@@ -902,6 +903,14 @@
   },
   "schemaVersion": "3.0.23",
   "updatedAt": "2020-04-23T18:59:22.114Z",
+=======
+      "address": "0x99ba92Ea03356069d3D5610EFEB099a9f284933d",
+      "transactionHash": "0x379853eafb86ad45a4ef7cbafdc30c31dcde6d49d69a5f396699769d2abebcc6"
+    }
+  },
+  "schemaVersion": "3.0.23",
+  "updatedAt": "2020-04-24T01:33:20.282Z",
+>>>>>>> Stashed changes
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
