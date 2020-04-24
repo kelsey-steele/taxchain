@@ -890,27 +890,12 @@
     "4": {
       "events": {},
       "links": {},
-<<<<<<< Updated upstream
-      "address": "0x87ADE624CF4a33c9BCa4Ee09c073300817fdA851",
-      "transactionHash": "0xd51bcc3f4d1d94ecdf6ed679f98d8fc29be0ce2b9b3e16acbf390d2534da34bb"
-    },
-    "5777": {
-      "events": {},
-      "links": {},
-      "address": "0xEBcc6AFAD94206c279671e812341787A23422366",
-      "transactionHash": "0x997a762c68be6403cdba0b7e1df03cc9292f22a611d2b8e7d71d3a2d46f5698d"
+      "address": "0x0fCb94761ED09721bEb813Ca37c5f9459016516D",
+      "transactionHash": "0x8730e8ab0aee414987cfd0edc084ae1a720aaf353ea6cbd9dd21411182394ae8"
     }
   },
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-04-23T18:59:22.114Z",
-=======
-      "address": "0x99ba92Ea03356069d3D5610EFEB099a9f284933d",
-      "transactionHash": "0x379853eafb86ad45a4ef7cbafdc30c31dcde6d49d69a5f396699769d2abebcc6"
-    }
-  },
-  "schemaVersion": "3.0.23",
-  "updatedAt": "2020-04-24T01:33:20.282Z",
->>>>>>> Stashed changes
+  "updatedAt": "2020-04-24T17:08:07.123Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

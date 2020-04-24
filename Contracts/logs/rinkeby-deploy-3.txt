@@ -1,0 +1,128 @@
+C:\Users\Joy\Documents\cs481\taxchain\Contracts>truffle migrate --network rinkeby --reset
+
+Compiling your contracts...
+===========================
+> Compiling .\contracts\Employee.sol
+> Compiling .\contracts\IRS.sol
+> Compiling .\contracts\Migrations.sol
+> Compiling .\contracts\TaxChain.sol
+> Compiling .\contracts\lib\safemath.sol
+> Artifacts written to C:\Users\Joy\Documents\cs481\taxchain\Contracts\build\contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'rinkeby-fork'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > block number:        6372840
+   > block timestamp:     1587748014
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.132449781
+   > gas used:            149175
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00029835 ETH
+
+   -------------------------------------
+   > Total cost:          0.00029835 ETH
+
+
+2_taxchain_migration.js
+=======================
+
+   Deploying 'TaxChain'
+   --------------------
+   > block number:        6372842
+   > block timestamp:     1587748030
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.128233199
+   > gas used:            2080950
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0041619 ETH
+
+   -------------------------------------
+   > Total cost:           0.0041619 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.00446025 ETH
+
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0x8730e8ab0aee414987cfd0edc084ae1a720aaf353ea6cbd9dd21411182394ae8
+   > Blocks: 0            Seconds: 4
+   > contract address:    0x0fCb94761ED09721bEb813Ca37c5f9459016516D
+   > block number:        6372841
+   > block timestamp:     1587748042
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.129464631
+   > gas used:            164175
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0032835 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:           0.0032835 ETH
+
+
+2_taxchain_migration.js
+=======================
+
+   Deploying 'TaxChain'
+   --------------------
+   > transaction hash:    0xa161daccc1788047741ab2649d12603c5f90031309bdd09beb639ce7764de35f
+   > Blocks: 1            Seconds: 12
+   > contract address:    0x94D21FAd972a8c17693F384b9F799721F10690c5
+   > block number:        6372843
+   > block timestamp:     1587748072
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.085798811
+   > gas used:            2140950
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.042819 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:            0.042819 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.0461025 ETH
+------------------------------------------------------------------------------------------
+contract address:    0x94D21FAd972a8c17693F384b9F799721F10690c5

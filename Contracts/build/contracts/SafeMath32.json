@@ -7262,11 +7262,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.23",
-<<<<<<< Updated upstream
-  "updatedAt": "2020-04-23T18:57:50.505Z",
-=======
-  "updatedAt": "2020-04-24T01:31:41.089Z",
->>>>>>> Stashed changes
+  "updatedAt": "2020-04-24T17:06:42.439Z",
   "devdoc": {
     "details": "SafeMath library implemented for uint32",
     "methods": {},
