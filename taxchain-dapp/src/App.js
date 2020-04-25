@@ -6,21 +6,13 @@ import { HashRouter, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import { Provider } from "react-redux";
 
-// import TopBar from "./components/TopBar";
-
-// import Greeting from "./pages/Greeting";
-// import MyZombieInventory from "./pages/MyZombieInventory";
-// import ZombieInventory from "./pages/ZombieInventory";
-// import AttackZombie from "./pages/AttackZombie";
-// import FeedOnKitty from "./pages/FeedOnKitty";
-// import ChangeName from "./pages/ChangeName";
-// import LevelUp from "./pages/LevelUp";
-// import TransferZombie from "./pages/TransferZombie";
-
 import store from "./redux/store";
 
 import {getMessageSenderType} from "./common/contractMethods";
 import Register from "./pages/register";
+import Employee from "./pages/employee";
+import MenuBar from "./components/menu";
+
 //
 //  This is the main application page; routing is handled to render other pages in the application
 
@@ -70,37 +62,21 @@ class App extends Component {
 
   render() {
     // let s = await getMessageSenderAddressType()
-    let page = "Not initialized";
+    let page = "No page initialized";
     if(this.state.msgSenderType == "NONE")
-      page = <Register /*parentState={this.state}*//>
+      page = <Register />
+    else if(this.state.msgSenderType == "EMPLOYEE")
+      page = <Employee />
     
     return (
       <Provider store={store}>
         <HashRouter>
-          <Container>
-            <div>
-              Hello amigos
+          <div>
+            <MenuBar />
+          </div>
+          <Container style={{marginTop:'60px'}}>
+            <div id="pageBody">
               {page}
-            {/* <TopBar state={this.state} />
-            <div>
-              <Route exact path="/" component={Greeting} />
-              <Route
-                exact
-                path="/myZombieInventory"
-                component={MyZombieInventory}
-              />
-              <Route
-                exact
-                path="/ZombieInventory"
-                component={ZombieInventory}
-              />
-              {/* routes used in zombie action modal }*/
-              // <Route exact path="/AttackZombie" component={AttackZombie} />
-              // <Route exact path="/FeedOnKitty" component={FeedOnKitty} />
-              // <Route exact path="/ChangeName" component={ChangeName} />
-              // <Route exact path="/LevelUp" component={LevelUp} />
-              // <Route exact path="/TransferZombie" component={TransferZombie} />
-              }
             </div>
           </Container>
         </HashRouter>

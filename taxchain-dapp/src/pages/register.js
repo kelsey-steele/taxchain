@@ -40,6 +40,9 @@ class Register extends Component {
             this.setState({
                 errorMessage: this.getSuccessfulRegistrationMessage()
             })
+            setTimeout(() => {
+                window.location.reload();
+            });
         } catch(err) {
             console.log(err);
             this.setState({
