@@ -19,6 +19,8 @@ import { Provider } from "react-redux";
 
 import store from "./redux/store";
 
+import {getMessageSenderType} from "./common/contractMethods";
+import Register from "./pages/register";
 //
 //  This is the main application page; routing is handled to render other pages in the application
 
@@ -33,18 +35,28 @@ class App extends Component {
   //
   // **************************************************************************
 
+  state = {
+    msgSenderType: "",
+    msgSenderAddress: "",
+    contractInstance: null,
+  }
+
   componentDidMount = async () => {
     try {
       const web3 = await getWeb3(); // from utils directory;  connect to metamask
       const data = await initBlockchain(web3);  // get contract instance and user address
-      console.log("Component did mount");
-      console.log(data);
+      
+      this.setState({
+        msgSenderType: await getMessageSenderType(data.taxChainContract, data.userAddress),
+        contractInstance : data.taxChainContract,
+        msgSenderAddress: data.userAddress,
+      });
+
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`
       );
-
       console.log(error);
     }
   };
@@ -57,12 +69,18 @@ class App extends Component {
   // **************************************************************************
 
   render() {
+    // let s = await getMessageSenderAddressType()
+    let page = "Not initialized";
+    if(this.state.msgSenderType == "NONE")
+      page = <Register /*parentState={this.state}*//>
+    
     return (
       <Provider store={store}>
         <HashRouter>
           <Container>
             <div>
               Hello amigos
+              {page}
             {/* <TopBar state={this.state} />
             <div>
               <Route exact path="/" component={Greeting} />

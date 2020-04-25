@@ -13,9 +13,11 @@
 //
 // They are defined as all upper-case constants and may be exported if needed elsewhere.
 
-const WEB3_INITIALIZED = "WEB3_INITIALIZED";
-const BLOCKCHAIN_INITIALIZED = "BLOCKCHAIN_INITIALIZED";
-const ZOMBIE_COUNT = "ZOMBIE_COUNT";
+export const WEB3_INITIALIZED = "WEB3_INITIALIZED";
+export const BLOCKCHAIN_INITIALIZED = "BLOCKCHAIN_INITIALIZED";
+export const UPDATE_CONTRACT_INSTANT = "UPDATE_CONTRACT_INSTANT";
+export const UPDATE_USER_ADDRESS = "UPDATE_USER_ADDRESS";
+export const UPDATE_USER_TYPE = "UPDATE_USER_TYPE";
 
 //  Actions and Action Creator Functions
 //
@@ -51,6 +53,7 @@ const initialState = {
   web3Instance: null,
   taxChainContract: {}, // contract instance with methods, etc.
   userAddress: "",
+  userType: "NONE",
   // userZombieCount: 0,
   // totalZombieCount: 0
 };
@@ -82,6 +85,20 @@ export default function reducer(state = initialState, action) {
         userAddress: action.payload.userAddress,
         // userZombieCount: action.payload.userZombieCount
       });
+    case UPDATE_CONTRACT_INSTANT:
+      return Object.assign({}, state, {
+        taxChainContract: action.payload.taxChainContract,
+      });
+    case UPDATE_USER_ADDRESS:
+      return Object.assign({}, state, {
+        userAddress: action.payload.userAddress,
+      });
+    case UPDATE_USER_TYPE:
+      return Object.assign({}, state, {
+        userType: action.payload.userType,
+      });
+      
+        
 
     // case ZOMBIE_COUNT:
     //   return Object.assign({}, state, {
