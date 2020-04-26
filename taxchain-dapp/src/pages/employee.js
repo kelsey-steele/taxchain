@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSalaryAmountsForEmployeeAndMonth, getEmployeeTotalIncome, getTaxRate, getEmployerIdsForEmployeeAndMonth } from "../common/contractMethods";
-import { Table, Segment, Dimmer, Loader, Image, Icon, Statistic } from "semantic-ui-react";
+import { getSalaryAmountsForEmployeeAndMonth, getEmployeeTotalIncome, getTaxRate, getEmployerIdsForEmployeeAndMonth, employeeAcceptEmployer } from "../common/contractMethods";
+import { Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button } from "semantic-ui-react";
 import { getFailedMessage } from "../common/commonMethods";
 
 
@@ -13,13 +13,20 @@ class Employee extends Component {
         totalTax: 0,
         incomeTaxRate: 1,
         loadingFinished: false,
-        errorMessage: ""
+        errorMessage: "",
+        
+        panes: [],
+        acceptEmployerMessage: "",
+        showAcceptEmployerMessage: false,
+        doAcceptButtonLoading: false,
+        submittedEmployerAddressToAccept: "",
+        errorHappendedToAcceptEmployer: false
     }
     async componentDidMount() {
-        this.setEmployerIds();
-        this.setMonthlySalaryAmounts();
-        this.setTotalSalary();
-        this.setTotalTax();
+        await this.setEmployerIds();
+        await this.setTotalSalary();
+        await this.setMonthlySalaryAmounts();
+        await this.setTotalTax();
         setTimeout(() => {
             this.setState({ loadingFinished: true });
         }, 1000);
@@ -90,7 +97,7 @@ class Employee extends Component {
             if (monthlySalaries[month] === undefined || monthlySalaries[month].length == 0)
                 continue;
             for (let emplr = 0; emplr < monthlySalaries[month].length; emplr++) {
-                if(employerIds.length == 0 || employerIds[month] === undefined || employerIds[month].length == 0)
+                if (employerIds.length == 0 || employerIds[month] === undefined || employerIds[month].length == 0)
                     employerId = "Not loaded yet";
                 else
                     employerId = this.state.employersIds[month][emplr];
@@ -127,7 +134,7 @@ class Employee extends Component {
         });
     }
 
-    render() {
+    getSalaryPan = () => {
         let header = "", body = "", footer = "";
         try {
             header = this.getTableHeader();
@@ -137,7 +144,7 @@ class Employee extends Component {
             console.log(err);
             this.setState({ errorMessage: getFailedMessage(err) });
         }
-        return (
+        let paneContent = (
             <div>
                 <Segment hidden={this.state.errorMessage === ""}>
                     {this.state.errorMessage}
@@ -178,8 +185,90 @@ class Employee extends Component {
                     </Table.Body>
                     {footer}
                 </Table>
-
             </div>
+        );
+        let paneName = 'Tax Information';
+
+        return {
+            menuItem: paneName,
+            render: () => <Tab.Pane>{paneContent}</Tab.Pane>
+        }
+    }
+
+    handleAcceptEmployerAddressValue = (e, {name, value}) => {
+        this.setState({submittedEmployerAddressToAccept: value});
+    }
+
+    handleAcceptEmployerSubmit = async () => {
+        this.setState({doAcceptButtonLoading: true});
+        try {
+            const result = await employeeAcceptEmployer(this.props.taxChainContract, this.props.userAddress, 
+                this.state.submittedEmployerAddressToAccept, this.props.userAddress);
+            this.setState({
+                acceptEmployerMessage: "Employer successfully accepted",
+                errorHappendedToAcceptEmployer: false,
+                doAcceptButtonLoading: false
+            });
+        } catch(err) {
+            console.log(err);
+            this.setState({
+                acceptEmployerMessage: err.message,
+                errorHappendedToAcceptEmployer: true,
+                doAcceptButtonLoading: false
+            });
+        }
+        this.setState({
+            showAcceptEmployerMessage: true,
+            submittedEmployerAddressToAccept: ""
+        })
+
+        setTimeout(()=>{
+            this.setState({showAcceptEmployerMessage: false})
+        }, 10000);
+    }
+
+    getEmployerAcceptPan = () => {
+        let employerPaneContent = (
+            <Segment>
+                <Message
+                    hidden={!this.state.showAcceptEmployerMessage} 
+                    negative={!this.state.errorHappendedToAcceptEmployer}
+                    success={this.state.errorHappendedToAcceptEmployer}
+                    icon={this.state.errorHappendedToAcceptEmployer?'times':'check'}
+                    header={this.state.errorHappendedToAcceptEmployer?'Error!!':'Success!!'}
+                    content={this.state.acceptEmployerMessage}
+                    size="small"
+                />
+                <Form onSubmit={this.handleAcceptEmployerSubmit}>
+                    <Form.Input required
+                        label='Enter the Employer ID to accpet salary' 
+                        placeholder='0xFb3a0F9e5C1B684cc54d7EF2a052231E8e54Bf19'
+                        value={this.state.submittedEmployerAddressToAccept} 
+                        onChange={this.handleAcceptEmployerAddressValue}
+                    />
+                    <Form.Button animated loading={this.state.doAcceptButtonLoading}>
+                        <Button.Content visible>Accept</Button.Content>
+                        <Button.Content hidden>
+                            <Icon fitted size="large" name='user plus' />
+                        </Button.Content>
+                    </Form.Button>
+                </Form>
+            </Segment>
+        );
+        let paneName = "Accept Employer";
+        return {
+            menuItem: paneName,
+            render: () => <Tab.Pane>{employerPaneContent}</Tab.Pane>
+        }
+    }
+
+    render() {
+        let allPanes = [
+            this.getSalaryPan(),
+            this.getEmployerAcceptPan()
+        ];
+        return (
+            <Tab panes={allPanes} renderActiveOnly={true} />
         );
     }
 }
