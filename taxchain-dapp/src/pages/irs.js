@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getAllEmployee, getEmployeeTotalIncome} from "../common/contractMethods";
+import {getAllEmployee, getEmployeeTotalIncome, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import EmployeeCard from "../components/employeecard";
 import {Grid, GridColumn, GridRow} from "semantic-ui-react";
 
@@ -18,9 +18,11 @@ class IRS extends Component {
         //Get address for all employees when component mount and set the result as state variable employee.
         try {
             var result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
+            var salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.props.userAddress);
             this.setState({
                 errorMessage: "Successfully retrieved Employees",
                 employee: result,
+                salaries: salary,
             })
         } catch (err) {
             console.log(err);
@@ -55,7 +57,7 @@ class IRS extends Component {
                 </Grid>
             </div>
         );
-    }
+    }q
 }
 
 function mapStateToProps(state) {
