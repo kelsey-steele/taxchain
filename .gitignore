@@ -1,3 +1,6 @@
 Contracts/node_modules
 Contracts/secrets/
 taxchain-dapp/src/contracts_ABI
+taxchain-dapp/node_modules
+.idea
+package-lock.json

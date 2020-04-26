@@ -11,6 +11,7 @@ import store from "./redux/store";
 import { getMessageSenderType } from "./common/contractMethods";
 import Register from "./pages/register";
 import Employee from "./pages/employee";
+import IRS from "./pages/irs"
 import MenuBar from "./components/menu";
 
 //
@@ -67,6 +68,8 @@ class App extends Component {
 			page = <Register />
 		else if (this.state.msgSenderType == "EMPLOYEE")
 			page = <Employee />
+		else if (this.state.msgSenderType == "IRS")
+			page = <IRS />
 
 		return (
 			<Provider store={store}>
