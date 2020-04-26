@@ -17,5 +17,13 @@ async function registerNewUserFunc(taxChainContract, userAddress,  userType, msg
     }
 }
 
+async function getSalaryAmountsForEmployeeAndMonthFunc(taxChainContract, userAddress, month, msgSenderAddress) {
+    const res = await taxChainContract.methods.getSalaryAmountsForEmployeeAndMonth(userAddress, month)
+                .call({from: msgSenderAddress});
+    console.log(res);
+}
+
+
 export const getMessageSenderType=getMessageSenderTypeFunc;
 export const registerNewUser=registerNewUserFunc;
+export const getSalaryAmountsForEmployeeAndMonth=getSalaryAmountsForEmployeeAndMonthFunc;
