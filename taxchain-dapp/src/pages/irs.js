@@ -12,6 +12,7 @@ class IRS extends Component {
         errorMessage: "",
         employee:[],
         salaries : [],
+        taxRate : .1,
     }
 
     async componentDidMount() {
@@ -40,7 +41,7 @@ class IRS extends Component {
                 {
                     //mapping through all employee address from state variable and setting EmployeeCard Component for each of these addresses.
                     this.state.employee.map((employeeAddress, index) => {
-                        return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} /></Grid.Column>)
+                        return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} taxRate={this.state.taxRate} /></Grid.Column>)
                     })
                 }
                 </Grid>
