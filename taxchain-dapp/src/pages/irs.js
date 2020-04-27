@@ -15,10 +15,10 @@ class IRS extends Component {
     }
 
     async componentDidMount() {
-        //Get address for all employees when component mount and set the result as state variable employee.
+        //Get address and salary for all employees when component mount
         try {
-            var result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
-            var salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.props.userAddress);
+            const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
+            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.props.userAddress);
             this.setState({
                 errorMessage: "Successfully retrieved Employees",
                 employee: result,
@@ -32,26 +32,15 @@ class IRS extends Component {
         }
     }
 
-    //This function get salary from individual employee address. Might be removed in further work.
-    // async getEmployeeSalary(employeeAddress) {
-    //     try {
-    //         var res = await getEmployeeTotalIncome(this.props.taxChainContract, employeeAddress)
-    //     } catch (err) {
-    //         console.log("Failed");
-    //     }
-    //     return res;
-    // }
-
-
     render() {
         return (
             <div>
-                In IRS home page
+                <b>All Employees</b>
                 <Grid>
                 {
                     //mapping through all employee address from state variable and setting EmployeeCard Component for each of these addresses.
                     this.state.employee.map((employeeAddress, index) => {
-                        return(<Grid.Column width={5}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} /></Grid.Column>)
+                        return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} /></Grid.Column>)
                     })
                 }
                 </Grid>
