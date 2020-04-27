@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getSalaryAmountsForEmployeeAndMonth, getEmployeeTotalIncome, getTaxRate, getEmployerIdsForEmployeeAndMonth, employeeAcceptEmployer } from "../common/contractMethods";
-import { Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button } from "semantic-ui-react";
+import { Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
 import { getFailedMessage } from "../common/commonMethods";
 
 
@@ -14,19 +14,26 @@ class Employee extends Component {
         incomeTaxRate: 1,
         loadingFinished: false,
         errorMessage: "",
-        
+
         panes: [],
         acceptEmployerMessage: "",
         showAcceptEmployerMessage: false,
         doAcceptButtonLoading: false,
         submittedEmployerAddressToAccept: "",
-        errorHappendedToAcceptEmployer: false
+        errorHappendedToAcceptEmployer: false,
+        
+        newSalaryModalOpen: false,
+        newSalaryAmount: 0,
+        newSalaryMonth: 1,
+        newSalaryEmployerId: ""
     }
+
     async componentDidMount() {
         await this.setEmployerIds();
         await this.setTotalSalary();
         await this.setMonthlySalaryAmounts();
         await this.setTotalTax();
+        this.listenSalaryAddedEvent();
         setTimeout(() => {
             this.setState({ loadingFinished: true });
         }, 1000);
@@ -70,21 +77,26 @@ class Employee extends Component {
                 <Table.Row>
                     <Table.HeaderCell>Month</Table.HeaderCell>
                     <Table.HeaderCell>Employer</Table.HeaderCell>
-                    <Table.HeaderCell>Salary Amount</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='right'>Salary Amount</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
         );
     }
 
-    getTableRow = (month, employerId, salary) => {
+    getMonthNameFromNumber = (monthNum) => {
         let monthNames = ["January", "February", "March", "April",
             "May", "June", "July", "August", "September",
             "October", "November", "December"];
+        return monthNames[monthNum];
+    }
+
+    getTableRow = (month, employerId, salary) => {
+        
         return (
             <Table.Row>
-                <Table.Cell>{monthNames[month]}</Table.Cell>
+                <Table.Cell>{this.getMonthNameFromNumber(month)}</Table.Cell>
                 <Table.Cell>{employerId}</Table.Cell>
-                <Table.Cell>{salary}</Table.Cell>
+                <Table.Cell textAlign='right'>{salary}</Table.Cell>
             </Table.Row>
         );
     }
@@ -114,7 +126,7 @@ class Employee extends Component {
                 <Table.Row>
                     <Table.HeaderCell />
                     <Table.HeaderCell />
-                    <Table.HeaderCell><b>Total: {this.state.totalSalary}$ </b></Table.HeaderCell>
+                    <Table.HeaderCell textAlign='right'><b>Total: {this.state.totalSalary}$ </b></Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>
         );
@@ -195,21 +207,21 @@ class Employee extends Component {
         }
     }
 
-    handleAcceptEmployerAddressValue = (e, {name, value}) => {
-        this.setState({submittedEmployerAddressToAccept: value});
+    handleAcceptEmployerAddressValue = (e, { name, value }) => {
+        this.setState({ submittedEmployerAddressToAccept: value });
     }
 
     handleAcceptEmployerSubmit = async () => {
-        this.setState({doAcceptButtonLoading: true});
+        this.setState({ doAcceptButtonLoading: true });
         try {
-            const result = await employeeAcceptEmployer(this.props.taxChainContract, this.props.userAddress, 
+            const result = await employeeAcceptEmployer(this.props.taxChainContract, this.props.userAddress,
                 this.state.submittedEmployerAddressToAccept, this.props.userAddress);
             this.setState({
                 acceptEmployerMessage: "Employer successfully accepted",
                 errorHappendedToAcceptEmployer: false,
                 doAcceptButtonLoading: false
             });
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             this.setState({
                 acceptEmployerMessage: err.message,
@@ -222,8 +234,8 @@ class Employee extends Component {
             submittedEmployerAddressToAccept: ""
         })
 
-        setTimeout(()=>{
-            this.setState({showAcceptEmployerMessage: false})
+        setTimeout(() => {
+            this.setState({ showAcceptEmployerMessage: false })
         }, 10000);
     }
 
@@ -231,19 +243,19 @@ class Employee extends Component {
         let employerPaneContent = (
             <Segment>
                 <Message
-                    hidden={!this.state.showAcceptEmployerMessage} 
+                    hidden={!this.state.showAcceptEmployerMessage}
                     negative={!this.state.errorHappendedToAcceptEmployer}
                     success={this.state.errorHappendedToAcceptEmployer}
-                    icon={this.state.errorHappendedToAcceptEmployer?'times':'check'}
-                    header={this.state.errorHappendedToAcceptEmployer?'Error!!':'Success!!'}
+                    icon={this.state.errorHappendedToAcceptEmployer ? 'times' : 'check'}
+                    header={this.state.errorHappendedToAcceptEmployer ? 'Error!!' : 'Success!!'}
                     content={this.state.acceptEmployerMessage}
                     size="small"
                 />
                 <Form onSubmit={this.handleAcceptEmployerSubmit}>
                     <Form.Input required
-                        label='Enter the Employer ID to accpet salary' 
+                        label='Enter the Employer ID to accpet salary'
                         placeholder='0xFb3a0F9e5C1B684cc54d7EF2a052231E8e54Bf19'
-                        value={this.state.submittedEmployerAddressToAccept} 
+                        value={this.state.submittedEmployerAddressToAccept}
                         onChange={this.handleAcceptEmployerAddressValue}
                     />
                     <Form.Button animated loading={this.state.doAcceptButtonLoading}>
@@ -262,13 +274,78 @@ class Employee extends Component {
         }
     }
 
+    listenSalaryAddedEvent = () => {
+        let event = this.props.salaryAddedEvent;
+        event({
+            employeeId: this.props.userAddress
+        }, (err, result) => {
+            if (err) {
+                console.log("Error happened while litening to event", err);
+                return;
+            }
+            let amount = result.returnValues.amount;
+            let employerId = result.returnValues.employerId;
+            let employeeId = result.returnValues.employeeId;
+            let month = result.returnValues.month;
+            if (employeeId != this.props.userAddress)
+                return;
+            console.log("got new salary", amount, employerId, month);
+            this.addNewSalaryAfterEvent(amount, employerId, month);
+        });
+    }
+
+    addNewSalaryAfterEvent = (amount, employerId, month) => {
+        let monthlySalariesVar = this.state.monthlySalaries;
+        monthlySalariesVar[month - 1].push(amount);
+        let employersIdsVar = this.state.employersIds;
+        employersIdsVar[month - 1].push(employerId);
+        this.setState({
+            monthlySalaries: monthlySalariesVar,
+            employersIds: employersIdsVar,
+            newSalaryAmount: amount,
+            newSalaryEmployerId: employerId,
+            newSalaryMonth: month-1,
+            newSalaryModalOpen: true
+        });
+    }
+
+    closeSalaryReceivedModal = () => {
+        this.setState({newSalaryModalOpen: false});
+    }
+
+    getSalaryRecievedPopUp = () => {
+        return (
+            <Modal 
+                open = {this.state.newSalaryModalOpen} 
+                onClose = {this.closeSalaryReceivedModal}
+                basic size='small'>
+                <Header icon='money bill alternate outline' content='Paycheck received' />
+                <Modal.Content>
+                    <p>
+                        You received a paycheck of amount ${this.state.newSalaryAmount} from {' '}
+                        {this.state.newSalaryEmployerId} for the month of {' '}
+                        {this.getMonthNameFromNumber(this.state.newSalaryMonth)}.
+                    </p>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button color='green' onClick={this.closeSalaryReceivedModal}>
+                        <Icon name='checkmark' /> Yay!!
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+    }
+
     render() {
         let allPanes = [
             this.getSalaryPan(),
             this.getEmployerAcceptPan()
         ];
         return (
-            <Tab panes={allPanes} renderActiveOnly={true} />
+            <div>
+                {this.getSalaryRecievedPopUp()}
+                <Tab panes={allPanes} renderActiveOnly={true} />
+            </div>
         );
     }
 }
@@ -277,6 +354,7 @@ function mapStateToProps(state) {
     return {
         taxChainContract: state.taxChainContract,
         userAddress: state.userAddress,
+        salaryAddedEvent: state.taxChainContract.events.SalaryAdded,
     }
 }
 export default connect(mapStateToProps)(Employee);
