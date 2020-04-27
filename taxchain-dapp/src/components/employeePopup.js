@@ -9,8 +9,23 @@ class EmployeePopup extends Component {
 
     render() {
         return (
-          <Image src='https://react.semantic-ui.com/images/avatar/large/elliot.jpg' wrapped ui={false} />
-        
+          <row className='modal'>
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <Image eight="250" width="250" src='https://react.semantic-ui.com/images/avatar/large/elliot.jpg' wrapped ui={false} />
+            </div>
+            <div>
+              <br/>
+              <b>  Address: </b>{this.props.employeeInfo.employeeAddr}<br/>
+              <b>  Employer: </b>TODO<br/>
+              <b>  Start Date: </b>TODO<br/>
+              <b>  End Date: </b>-<br/>
+              <b>  Salary: </b>${this.props.employeeInfo.employeeSalary}<br/>
+              <b>  Annual Tax Amount: </b>${this.props.employeeInfo.annualTax}<br/>
+              <b>  Current Tax Amount: </b>{this.props.employeeInfo.currentMonthlyTax}<br/>
+              <b>  Tax Rate: </b>${this.props.employeeInfo.employeeTaxRate}<br/>
+
+            </div>
+          </row>
         );
     }
 }

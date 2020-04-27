@@ -7,7 +7,12 @@ import EmployeePopup from "../components/employeePopup";
 
 class EmployeeCard extends Component {
     state = {
+      employeeAddr : this.props.addr,
+      employeeSalary : this.props.salary,
+      employeeTaxRate : this.props.taxRate,
       date : new Date(),
+      annualTax : Math.round(this.props.salary*this.props.taxRate*10)/10,
+      currentMonthlyTax : this.props.salary*this.props.taxRate/12,
     }
 
     render() {
@@ -17,14 +22,14 @@ class EmployeeCard extends Component {
                 <Card.Content>
                     <Card.Header>Address</Card.Header>
                     <Card.Meta>
-                        <span className='date' class="limit">{this.props.addr}</span>
+                        <span className='date' class="limit">{this.state.employeeAddr}</span>
                     </Card.Meta>
                     <Card.Description>
-                        <div><b>Salary : </b>{this.props.salary}</div>
-                        <div><b>Annual Tax Amount : </b>{Math.round(this.props.salary*this.props.taxRate*10)/10}</div>
-                        <div><b>Current Tax Amount : </b>{Math.round(this.props.salary*this.props.taxRate/12*this.state.date.getMonth()*10)/10}</div>
+                        <div><b>Salary : </b>{this.state.employeeSalary}</div>
+                        <div><b>Annual Tax Amount : </b>{this.state.annualTax}</div>
+                        <div><b>Current Tax Amount : </b>{Math.round(this.state.currentMonthlyTax*this.state.date.getMonth()*10)/10}</div>
                         <Popup trigger={<button> More Employee Info</button>} modal closeOnDocumentClick>
-                          <EmployeePopup/>
+                          <EmployeePopup employeeInfo={this.state} />
                         </Popup>
                     </Card.Description>
                 </Card.Content>
