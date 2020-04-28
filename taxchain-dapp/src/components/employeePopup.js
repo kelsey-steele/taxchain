@@ -22,7 +22,7 @@ class EmployeePopup extends Component {
               <b>  Salary: </b>${this.props.employeeInfo.employeeSalary}<br/>
               <b>  Annual Tax Amount: </b>${this.props.employeeInfo.annualTax}<br/>
               <b>  Current Tax Amount: </b>${Math.round(this.props.employeeInfo.currentMonthlyTax*this.state.date.getMonth()*10)/10}<br/>
-              <b>  Tax Rate: </b>{parseFloat(this.props.employeeInfo.employeeTaxRate)*100}%<br/>
+              <b>  Tax Rate: </b>{this.props.employeeInfo.employeeTaxRate}%<br/>
 
             </div>
           </row>
