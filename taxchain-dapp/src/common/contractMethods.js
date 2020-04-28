@@ -16,14 +16,14 @@ async function registerNewUserFunc(taxChainContract, userAddress,  userType, msg
     }
 }
 
-async function getSalaryAmountsForEmployeeAndMonthFunc(taxChainContract, userAddress, month, msgSenderAddress) {
-    const res = await taxChainContract.methods.getSalaryAmountsForEmployeeAndMonth(userAddress, month)
+async function getSalaryAmountsForEmployeeAndMonthAndYearFunc(taxChainContract, userAddress, month, year, msgSenderAddress) {
+    const res = await taxChainContract.methods.getSalaryAmountsForEmployeeAndMonthAndYear(userAddress, month, year)
                 .call({from: msgSenderAddress});
     return res;
 }
 
-async function getEmployeeTotalIncomeFunc(taxChainContract, userAddress, msgSenderAddress) {
-    const res = await taxChainContract.methods.getEmployeeTotalIncome(userAddress)
+async function getEmployeeTotalIncomeAYearFunc(taxChainContract, userAddress, year, msgSenderAddress) {
+    const res = await taxChainContract.methods.getEmployeeTotalIncomeAYear(userAddress, year)
                 .call({from: msgSenderAddress});
     return res;
 }
@@ -33,8 +33,8 @@ async function getTaxRateFunc(taxChainContract) {
     return res;
 }
 
-async function getEmployerIdsForEmployeeAndMonthFunc(taxChainContract, userAddress, month, msgSenderAddress) {
-    const res = await taxChainContract.methods.getEmployerIdsForEmployeeAndMonth(userAddress, month)
+async function getEmployerIdsForEmployeeAndMonthAndYearFunc(taxChainContract, userAddress, month, year, msgSenderAddress) {
+    const res = await taxChainContract.methods.getEmployerIdsForEmployeeAndMonthAndYear(userAddress, month, year)
                 .call({from: msgSenderAddress});
     return res;
 }
@@ -48,8 +48,8 @@ async function employeeAcceptEmployerFunc(taxChainContract, employeeAddress, emp
 
 export const getMessageSenderType=getMessageSenderTypeFunc;
 export const registerNewUser=registerNewUserFunc;
-export const getSalaryAmountsForEmployeeAndMonth=getSalaryAmountsForEmployeeAndMonthFunc;
-export const getEmployeeTotalIncome=getEmployeeTotalIncomeFunc;
+export const getSalaryAmountsForEmployeeAndMonthAndYear=getSalaryAmountsForEmployeeAndMonthAndYearFunc;
+export const getEmployeeTotalIncomeAYear=getEmployeeTotalIncomeAYearFunc;
 export const getTaxRate=getTaxRateFunc;
-export const getEmployerIdsForEmployeeAndMonth=getEmployerIdsForEmployeeAndMonthFunc;
+export const getEmployerIdsForEmployeeAndMonthAndYear=getEmployerIdsForEmployeeAndMonthAndYearFunc;
 export const employeeAcceptEmployer=employeeAcceptEmployerFunc;
