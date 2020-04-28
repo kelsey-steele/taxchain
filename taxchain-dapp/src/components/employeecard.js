@@ -3,18 +3,16 @@ import { Card, Icon, Image } from 'semantic-ui-react'
 import Popup from "reactjs-popup";
 import EmployeePopup from "../components/employeePopup";
 
-
-
 //Card for employee that have address and salary display with image avatar
 
 class EmployeeCard extends Component {
     state = {
       employeeAddr : this.props.addr,
       employeeSalary : this.props.salary,
-      employeeTaxRate : this.props.taxRate,
+      employeeTaxRate : this.props.incomeTaxRate,
       date : new Date(),
-      annualTax : Math.round(this.props.salary*this.props.taxRate*10)/10,
-      currentMonthlyTax : this.props.salary*this.props.taxRate/12,
+      annualTax : Math.round(this.props.salary*(this.props.taxRate/100)*10)/10,
+      currentMonthlyTax : this.props.salary*(this.props.taxRate/100)/12,
     }
 
     render() {
