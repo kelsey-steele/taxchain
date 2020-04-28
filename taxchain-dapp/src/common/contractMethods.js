@@ -45,6 +45,11 @@ async function employeeAcceptEmployerFunc(taxChainContract, employeeAddress, emp
     return res;
 }
 
+async function addEmployeeSalaryFunc(taxChainContract, employeeAddress, employerAddress, year, month, amount, msgSenderAddress) {
+    const res = await taxChainContract.methods.addEmployeeSalary(employeeAddress, employerAddress, year, month, amount)
+                .send({from: msgSenderAddress});
+    return res;
+}
 
 export const getMessageSenderType=getMessageSenderTypeFunc;
 export const registerNewUser=registerNewUserFunc;
@@ -53,3 +58,4 @@ export const getEmployeeTotalIncomeAYear=getEmployeeTotalIncomeAYearFunc;
 export const getTaxRate=getTaxRateFunc;
 export const getEmployerIdsForEmployeeAndMonthAndYear=getEmployerIdsForEmployeeAndMonthAndYearFunc;
 export const employeeAcceptEmployer=employeeAcceptEmployerFunc;
+export const addEmployeeSalary=addEmployeeSalaryFunc;
