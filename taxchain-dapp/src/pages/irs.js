@@ -33,9 +33,16 @@ class IRS extends Component {
         }
     }
 
+
+
     render() {
         return (
             <div>
+              <div>
+                Current Tax Due: <br/>
+                Estimated Annual Tax Due:
+              </div>
+              <div>
                 <b>All Employees</b>
                 <Grid>
                 {
@@ -45,6 +52,7 @@ class IRS extends Component {
                     })
                 }
                 </Grid>
+              </div>
             </div>
         );
     }q

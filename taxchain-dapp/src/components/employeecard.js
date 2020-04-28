@@ -3,6 +3,8 @@ import { Card, Icon, Image } from 'semantic-ui-react'
 import Popup from "reactjs-popup";
 import EmployeePopup from "../components/employeePopup";
 
+
+
 //Card for employee that have address and salary display with image avatar
 
 class EmployeeCard extends Component {
@@ -25,9 +27,9 @@ class EmployeeCard extends Component {
                         <span className='date' class="limit">{this.state.employeeAddr}</span>
                     </Card.Meta>
                     <Card.Description>
-                        <div><b>Salary : </b>{this.state.employeeSalary}</div>
-                        <div><b>Annual Tax Amount : </b>{this.state.annualTax}</div>
-                        <div><b>Current Tax Amount : </b>{Math.round(this.state.currentMonthlyTax*this.state.date.getMonth()*10)/10}</div>
+                        <div><b>Salary : </b>${this.state.employeeSalary}</div>
+                        <div><b>Annual Tax Amount : </b>${this.state.annualTax}</div>
+                        <div><b>Current Tax Amount : </b>${Math.round(this.state.currentMonthlyTax*this.state.date.getMonth()*10)/10}</div>
                         <Popup trigger={<button> More Employee Info</button>} modal closeOnDocumentClick>
                           <EmployeePopup employeeInfo={this.state} />
                         </Popup>
