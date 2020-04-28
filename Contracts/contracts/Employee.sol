@@ -10,17 +10,26 @@ contract Employee {
         uint totalIncome;
     }
 
-    event SalaryAdded(address employeeId, uint month, address employerId, uint amount);
+    event SalaryAdded(address employeeId, uint year, uint month, address employerId, uint amount);
     event EmployeeAcceptedEmployer(address employeeId, address employerId);
-
-    mapping(address=>mapping(uint=>address[])) private monthlySalaryEmployers; //employeeAddress->month -> MonthlySalary
-    mapping(address=>mapping(uint=>uint[])) private monthlySalaryAmounts; //employeeAddress->month -> MonthlySalary
+    event EmployeeRemovedEmployer(address employeeId, address employerId);
     
+    mapping(uint=>mapping(address=>mapping(uint=>address[]))) private monthlySalaryEmployers; //year->employeeAddress->month -> MonthlySalaryEmployers
+    mapping(uint=>mapping(address=>mapping(uint=>uint[]))) private monthlySalaryAmounts; //year->employeeAddress->month -> MonthlySalary
+    
+
     mapping(address=>mapping(address=>bool)) private employerAdded; //employeeAddress->list of employee->bool
-    mapping(address=>EmployeeData) private employeeDatas;
+    mapping(uint=>mapping(address=>EmployeeData)) private employeeDatas; // year->employee data
+
+    mapping(uint=>mapping(address=>bool)) private employeeDataExistsForYear; // address->time
 
     modifier validMonth(uint _month) {
         require(_month >= 1 && _month <= 12, "Invalid month");
+        _;
+    }
+
+    modifier validYear(uint _year) {
+        require(_year >= 2020 && _year <= 2120, "Invalid year");
         _;
     }
 
@@ -29,36 +38,61 @@ contract Employee {
         _;
     }
 
+    function doesEmployeeDataExistForYear(address _employeeId, uint _year) internal view returns (bool) {
+        return employeeDataExistsForYear[_year][_employeeId] == true;
+    }
+
     function acceptCompany(address _employeeId, address _employerId) internal {
-        require(_employeeId == msg.sender, "Employee hiimself did not send the message");
+        require(_employeeId == msg.sender, "Employee himself did not send the message");
+        require(employerAdded[_employeeId][_employerId] == false, "Employee has already accepted employer");
         employerAdded[_employeeId][_employerId] = true;
         emit EmployeeAcceptedEmployer(_employeeId, _employerId);
     }
 
-    function _addSalaryToIncome(address _employeeId, uint _month, address _employerId, uint _amount) private {
-        EmployeeData storage employeeData = employeeDatas[_employeeId];
+    function removeCompany(address _employeeId, address _employerId) internal {
+        require(_employeeId == msg.sender, "Employee himself did not send the message");
+        require(employerAdded[_employeeId][_employerId] == true, "Employee has not accepted employer yet");
+        employerAdded[_employeeId][_employerId] = false;
+        emit EmployeeRemovedEmployer(_employeeId, _employerId);
+    }
+
+    function _addSalaryToIncome(address _employeeId, uint _year, uint _month, address _employerId, uint _amount) private validYear(_year) {
+        employeeDataExistsForYear[_year][_employeeId] = true;
+        EmployeeData storage employeeData = employeeDatas[_year][_employeeId];
         employeeData.totalIncome = employeeData.totalIncome.add(_amount);
 
-        monthlySalaryEmployers[_employeeId][_month].push(_employerId);
-        monthlySalaryAmounts[_employeeId][_month].push(_amount);
+        monthlySalaryEmployers[_year][_employeeId][_month].push(_employerId);
+        monthlySalaryAmounts[_year][_employeeId][_month].push(_amount);
 
-        emit SalaryAdded(_employeeId, _month, _employerId, _amount);
+        emit SalaryAdded(_employeeId, _year, _month, _employerId, _amount);
     }
 
-    function addSalary(address _employeeId, uint _month, address _employerId, uint _amount) internal validMonth(_month)  employeerAccepted(_employeeId, _employerId) {
+    function addSalary(address _employeeId, uint _year, uint _month, address _employerId, uint _amount) internal validMonth(_month) employeerAccepted(_employeeId, _employerId) {
         require(_amount > 0, "Salary can not be zero or negative");
         require(msg.sender == _employerId, "Employers himself did not add the salary");
-        _addSalaryToIncome(_employeeId, _month, _employerId, _amount);
+        _addSalaryToIncome(_employeeId, _year, _month, _employerId, _amount);
     }
 
-    function getEmployerIdsForEmployeeMonth(address _employeeId, uint _month) internal view validMonth(_month) returns (address[] memory) {
-        return monthlySalaryEmployers[_employeeId][_month];
-    }
-    function getSalaryAmountsForEmployeeMonth(address _employeeId, uint _month) internal view validMonth(_month) returns (uint[] memory) {
-        return monthlySalaryAmounts[_employeeId][_month];
+    function getEmployerIdsForEmployeeMonthAndYear(address _employeeId, uint _month, uint _year) internal view validMonth(_month) validYear(_year) returns (address[] memory) {
+        if(doesEmployeeDataExistForYear(_employeeId, _year) == false){
+            address[] memory emptyAray;
+            return emptyAray;
+        }
+        return monthlySalaryEmployers[_year][_employeeId][_month];
     }
 
-    function getTotalIncome(address _employeeId) internal view returns (uint) {
-        return employeeDatas[_employeeId].totalIncome;
+    function getSalaryAmountsForEmployeeMonthAndYear(address _employeeId, uint _month, uint _year) internal view validMonth(_month) validYear(_year) returns (uint[] memory) {
+        if(doesEmployeeDataExistForYear(_employeeId, _year) == false) {
+            uint[] memory emptyAray;
+            return emptyAray;
+        }
+        return monthlySalaryAmounts[_year][_employeeId][_month];
     }
+
+    function getTotalIncome(address _employeeId, uint _year) internal validYear(_year) view returns (uint) {
+        if(doesEmployeeDataExistForYear(_employeeId, _year) == false)
+            return 0;
+        return employeeDatas[_year][_employeeId].totalIncome;
+    }
+
 }
