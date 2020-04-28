@@ -8,7 +8,7 @@ const WEB3_INITIALIZED = 'WEB3_INITIALIZED'; // action type
 
 // action creator
 function web3Initialized(results) {
-  console.log("action creator", results);
+  //console.log("action creator", results);
    return {
         type: WEB3_INITIALIZED,
         payload: results
@@ -36,7 +36,7 @@ const getWeb3 = () =>
         results = {
           web3Instance: web3
         };
-        console.log("Injected web3 detected.", results);
+        //console.log("Injected web3 detected.", results);
         resolve(store.dispatch(web3Initialized(results))); // redux action creator
       }
       // Legacy dapp browsers...

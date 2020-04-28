@@ -70,11 +70,10 @@ const initialState = {
 // In this case, note that it is the default export.
 
 export default function reducer(state = initialState, action) {
-  console.log("reducer", action);
   switch (action.type) {
 
     case WEB3_INITIALIZED:
-      console.log("Web3 is initializing", action.payload.results);
+      // console.log("Web3 is initializing", action.payload.results);
       return Object.assign({}, state, {
         web3Instance: action.payload.web3Instance
       });
@@ -97,14 +96,6 @@ export default function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         userType: action.payload.userType,
       });
-      
-        
-
-    // case ZOMBIE_COUNT:
-    //   return Object.assign({}, state, {
-    //     totalZombieCount: action.payload.totalZombieCount,
-    //     userZombieCount: action.payload.userZombieCount
-    //   });
 
     default:
       return state;

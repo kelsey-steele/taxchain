@@ -1,0 +1,86 @@
+C:\Users\Joy\Documents\cs481\taxchain\Contracts>truffle migrate --network=rinkeby
+
+Compiling your contracts...
+===========================
+> Compiling .\contracts\Employee.sol
+> Compiling .\contracts\IRS.sol
+> Compiling .\contracts\TaxChain.sol
+> Compiling .\contracts\lib\safemath.sol
+> Artifacts written to C:\Users\Joy\Documents\cs481\taxchain\Contracts\build\contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'rinkeby-fork'
+> Network id:      4
+> Block gas limit: 0x9a398f
+
+
+3_taxChain_migration_2.js
+=========================
+
+   Replacing 'TaxChain'
+   --------------------
+   > block number:        6393330
+   > block timestamp:     1588055384
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.079476645
+   > gas used:            2887673
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005775346 ETH
+
+   -------------------------------------
+   > Total cost:         0.005775346 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.005775346 ETH
+
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 0x9a3bbf
+
+
+3_taxChain_migration_2.js
+=========================
+
+   Replacing 'TaxChain'
+   --------------------
+   > transaction hash:    0xdbddf11f8d1925c8f09e8607392faf9680b0b4dbd114c321900bc4279a3f01de
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x87bDfAbc37acD5f7b6F47b426008b86Ac8E3126c
+   > block number:        6393332
+   > block timestamp:     1588055409
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.025998531
+   > gas used:            2962673
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.05925346 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.05925346 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.05925346 ETH
+--------------------------------------------------------------------------------------
+contract address:    0x87bDfAbc37acD5f7b6F47b426008b86Ac8E3126c
+oneclickdapp: https://oneclickdapp.com/heavy-equal/

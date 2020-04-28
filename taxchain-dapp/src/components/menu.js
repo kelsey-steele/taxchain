@@ -1,14 +1,8 @@
 import React, {Component} from "react";
 import {
     Container,
-    Divider,
-    Dropdown,
-    Grid,
-    Header,
     Image,
-    List,
     Menu,
-    Segment,
   } from 'semantic-ui-react';
 
 class MenuBar extends Component {
@@ -16,7 +10,7 @@ class MenuBar extends Component {
         return (
             <div>
                 <Menu fixed='top' >
-                    <Container cen>
+                    <Container>
                         <Menu.Item as='a' header>
                         <Image src='TaxChain-Logo-without-text.png' style={{ width:'40px', marginRight: '1.5em' }} />
                         TaxChain

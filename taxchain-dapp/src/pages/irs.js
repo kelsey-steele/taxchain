@@ -14,6 +14,7 @@ import {Pagination, Grid, GridColumn, GridRow, Table, Segment, Dimmer, Loader, I
 //      the reloading problem was also a problem with the zombie app.
 //      leave it? Add reminder to refresh the page? Add a force reload? tbd
 
+// TODO: change year arg for getAllEmployeeTotalIncomeList method in componentDidMount
 
 
 class IRS extends Component {
@@ -38,7 +39,7 @@ class IRS extends Component {
         //Get address and salary for all employees when component mount
         try {
             const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
-            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.props.userAddress);
+            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, 2020, this.props.userAddress);
             this.setState({
                 errorMessage: "Successfully Retrieved Tax Information",
                 employee: result,

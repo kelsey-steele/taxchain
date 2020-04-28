@@ -12,6 +12,7 @@ import { getMessageSenderType } from "./common/contractMethods";
 import Register from "./pages/register";
 import Employee from "./pages/employee";
 import IRS from "./pages/irs"
+import Employer from "./pages/employer";
 import MenuBar from "./components/menu";
 import Popup from './components/employeePopup'; 
 
@@ -71,6 +72,9 @@ class App extends Component {
 			page = <Employee />
 		else if (this.state.msgSenderType == "IRS")
 			page = <IRS />
+		else if (this.state.msgSenderType == "EMPLOYER")
+			page = <Employer />
+
 
 		return (
 			<Provider store={store}>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSalaryAmountsForEmployeeAndMonth, getEmployeeTotalIncome, getTaxRate, getEmployerIdsForEmployeeAndMonth, employeeAcceptEmployer } from "../common/contractMethods";
-import { Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
+import { getSalaryAmountsForEmployeeAndMonthAndYear, getEmployeeTotalIncomeAYear, getTaxRate, getEmployerIdsForEmployeeAndMonthAndYear, employeeAcceptEmployer } from "../common/contractMethods";
+import { Table, Dropdown, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
 import { getFailedMessage } from "../common/commonMethods";
 
 
@@ -11,7 +11,7 @@ class Employee extends Component {
         employersIds: [],
         totalSalary: 0,
         totalTax: 0,
-        incomeTaxRate: 1,
+        incomeTaxRate: 10,
         loadingFinished: false,
         errorMessage: "",
 
@@ -21,14 +21,27 @@ class Employee extends Component {
         doAcceptButtonLoading: false,
         submittedEmployerAddressToAccept: "",
         errorHappendedToAcceptEmployer: false,
-        
+
         newSalaryModalOpen: false,
         newSalaryAmount: 0,
         newSalaryMonth: 1,
-        newSalaryEmployerId: ""
+        newSalaryYear: 1,
+        newSalaryEmployerId: "",
+
+        salaryYear: 2020,
+        salaryYearSet: false
     }
 
     async componentDidMount() {
+        this.setState({
+            loadingFinished: true
+        });
+    }
+
+    downloadData = async() => {
+        this.setState({
+            loadingFinished: false
+        });
         await this.setEmployerIds();
         await this.setTotalSalary();
         await this.setMonthlySalaryAmounts();
@@ -36,16 +49,18 @@ class Employee extends Component {
         this.listenSalaryAddedEvent();
         setTimeout(() => {
             this.setState({ loadingFinished: true });
-        }, 1000);
+        }, 300);
     }
 
     setEmployerIds = async () => {
+        if(this.state.salaryYearSet == false)
+            return;
         let month = 1;
         let allResults = [];
         try {
             for (month = 1; month <= 12; month++) {
-                let result = await getEmployerIdsForEmployeeAndMonth(this.props.taxChainContract, this.props.userAddress,
-                    month, this.props.userAddress);
+                let result = await getEmployerIdsForEmployeeAndMonthAndYear(this.props.taxChainContract, this.props.userAddress,
+                    month, this.state.salaryYear, this.props.userAddress);
                 allResults.push(result);
             }
             this.setState({ employersIds: allResults });
@@ -56,12 +71,14 @@ class Employee extends Component {
     }
 
     setMonthlySalaryAmounts = async () => {
+        if(this.state.salaryYearSet == false)
+            return;
         let month = 1;
         let allResults = [];
         try {
             for (month = 1; month <= 12; month++) {
-                let result = await getSalaryAmountsForEmployeeAndMonth(this.props.taxChainContract, this.props.userAddress,
-                    month, this.props.userAddress);
+                let result = await getSalaryAmountsForEmployeeAndMonthAndYear(this.props.taxChainContract, this.props.userAddress,
+                    month, this.state.salaryYear, this.props.userAddress);
                 allResults.push(result);
             }
             this.setState({ monthlySalaries: allResults });
@@ -91,7 +108,6 @@ class Employee extends Component {
     }
 
     getTableRow = (month, employerId, salary) => {
-        
         return (
             <Table.Row>
                 <Table.Cell>{this.getMonthNameFromNumber(month)}</Table.Cell>
@@ -101,6 +117,9 @@ class Employee extends Component {
         );
     }
     getTableBody = () => {
+        if(this.state.salaryYearSet == false)
+            return;
+
         let bodies = [];
         let monthlySalaries = this.state.monthlySalaries;
         let employerIds = this.state.employersIds;
@@ -126,24 +145,48 @@ class Employee extends Component {
                 <Table.Row>
                     <Table.HeaderCell />
                     <Table.HeaderCell />
-                    <Table.HeaderCell textAlign='right'><b>Total: {this.state.totalSalary}$ </b></Table.HeaderCell>
+                    <Table.HeaderCell textAlign='right'><b>Total: ${this.state.totalSalary} </b></Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>
         );
     }
 
     setTotalSalary = async () => {
-        let income = await getEmployeeTotalIncome(this.props.taxChainContract, this.props.userAddress, this.props.userAddress);
+        if(this.state.salaryYearSet == false)
+            return;
+        let income = await getEmployeeTotalIncomeAYear(this.props.taxChainContract, this.props.userAddress, this.state.salaryYear, this.props.userAddress);
         this.setState({ totalSalary: income });
     }
 
     setTotalTax = async () => {
+        if(this.state.salaryYearSet == false)
+            return;
         let taxRate = await getTaxRate(this.props.taxChainContract);
 
         this.setState({
-            totalTax: this.state.totalSalary / taxRate,
+            totalTax: this.state.totalSalary * taxRate / 100.0,
             incomeTaxRate: taxRate,
         });
+    }
+
+    getYearOptions = () => {
+        let yearOptions = [];
+        for (let y = 2020; y <= 2120; y++) {
+            yearOptions.push({
+                key: y,
+                text: y,
+                value: y
+            });
+        }
+        return yearOptions;
+    }
+
+    changeYear = async(event, {value}) => {
+        await this.setState({
+            salaryYear: value,
+            salaryYearSet: true
+        });
+        await this.downloadData();
     }
 
     getSalaryPan = () => {
@@ -156,10 +199,21 @@ class Employee extends Component {
             console.log(err);
             this.setState({ errorMessage: getFailedMessage(err) });
         }
+        let yearOptions = this.getYearOptions();
         let paneContent = (
             <div>
                 <Segment hidden={this.state.errorMessage === ""}>
                     {this.state.errorMessage}
+                </Segment>
+                <Segment>
+                    <span>Select Year</span>
+                    <Dropdown
+                        placeholder='Select Year'
+                        fluid
+                        selection
+                        options={yearOptions}
+                        onChange={this.changeYear}
+                    />
                 </Segment>
                 <Segment>
                     <Statistic.Group widths='three'>
@@ -275,9 +329,9 @@ class Employee extends Component {
     }
 
     listenSalaryAddedEvent = () => {
-        let event = this.props.salaryAddedEvent;
-        event({
-            employeeId: this.props.userAddress
+        let event = this.props.salaryAddedEvent({
+            employeeId: this.props.userAddress,
+            year: this.state.salaryYear
         }, (err, result) => {
             if (err) {
                 console.log("Error happened while litening to event", err);
@@ -287,14 +341,15 @@ class Employee extends Component {
             let employerId = result.returnValues.employerId;
             let employeeId = result.returnValues.employeeId;
             let month = result.returnValues.month;
-            if (employeeId != this.props.userAddress)
+            let year = result.returnValues.year;
+            if (employeeId != this.props.userAddress || year != this.state.salaryYear)
                 return;
-            console.log("got new salary", amount, employerId, month);
-            this.addNewSalaryAfterEvent(amount, employerId, month);
+            console.log("got new salary", amount, employerId, month, result);
+            this.addNewSalaryAfterEvent(amount, employerId, month, year);
         });
     }
 
-    addNewSalaryAfterEvent = (amount, employerId, month) => {
+    addNewSalaryAfterEvent = (amount, employerId, month, year) => {
         let monthlySalariesVar = this.state.monthlySalaries;
         monthlySalariesVar[month - 1].push(amount);
         let employersIdsVar = this.state.employersIds;
@@ -304,27 +359,29 @@ class Employee extends Component {
             employersIds: employersIdsVar,
             newSalaryAmount: amount,
             newSalaryEmployerId: employerId,
-            newSalaryMonth: month-1,
+            newSalaryMonth: month - 1,
+            newSalaryYear: year,
             newSalaryModalOpen: true
         });
     }
 
     closeSalaryReceivedModal = () => {
-        this.setState({newSalaryModalOpen: false});
+        this.setState({ newSalaryModalOpen: false });
     }
 
     getSalaryRecievedPopUp = () => {
         return (
-            <Modal 
-                open = {this.state.newSalaryModalOpen} 
-                onClose = {this.closeSalaryReceivedModal}
+            <Modal
+                open={this.state.newSalaryModalOpen}
+                onClose={this.closeSalaryReceivedModal}
                 basic size='small'>
                 <Header icon='money bill alternate outline' content='Paycheck received' />
                 <Modal.Content>
                     <p>
                         You received a paycheck of amount ${this.state.newSalaryAmount} from {' '}
                         {this.state.newSalaryEmployerId} for the month of {' '}
-                        {this.getMonthNameFromNumber(this.state.newSalaryMonth)}.
+                        {this.getMonthNameFromNumber(this.state.newSalaryMonth)}, {' '}
+                        {this.state.newSalaryYear}.
                     </p>
                 </Modal.Content>
                 <Modal.Actions>
