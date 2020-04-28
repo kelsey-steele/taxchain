@@ -1,15 +1,23 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getTaxRate, getAllEmployee, getEmployeeTotalIncome, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
+import {changeIRSTaxRate, getTaxRate, getAllEmployee, getEmployeeTotalIncome, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import EmployeeCard from "../components/employeecard";
-import {Grid, GridColumn, GridRow, Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
+import ChangeTaxRate from "../components/changeTaxRate";
+import {Pagination, Grid, GridColumn, GridRow, Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
 
 // TODO: implement start date and end Date
 // TODO: Calculate current tax based off start/End
 // TODO: implement employer count
+// TODO: ability to add IRS account
+// TODO: add page numbers to employees
+// TODO: have all tabs update when changing Tax Rate - redux matter?
+//      the reloading problem was also a problem with the zombie app.
+//      leave it? Add reminder to refresh the page? Add a force reload? tbd
+
 
 
 class IRS extends Component {
+
     state = {
         selectedType : "irs",
         registerMessageVisible : true,
@@ -23,6 +31,7 @@ class IRS extends Component {
         totalEmployees : 0,
         totalIncomeTax : 0,
         totalSalaries : 0,
+        tabIndex : 1,
     }
 
     async componentDidMount() {
@@ -68,29 +77,6 @@ class IRS extends Component {
             totalIncomeTax: totalIncomeTax,
             totalSalaries: totalSalaries,
         });
-    }
-
-    getEmployeesPane = () => {
-      let employeesPane = (
-          <div>
-            <b>All Employees</b>
-            <Grid>
-            {
-                //mapping through all employee address from state variable and setting EmployeeCard Component for each of these addresses.
-                this.state.employee.map((employeeAddress, index) => {
-                    return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} taxRate={this.state.incomeTaxRate} /></Grid.Column>)
-                })
-            }
-            </Grid>
-          </div>
-      );
-      let paneName = 'Employees';
-
-      return {
-        menuItem: paneName,
-        render: () => <Tab.Pane>{employeesPane}</Tab.Pane>
-      }
-
     }
 
     getOverviewPane = () => {
@@ -160,18 +146,86 @@ class IRS extends Component {
       }
     }
 
+    getEmployersPane = () => {
+      let EmployersPane = (
+        <div>
+          meow
+        </div>
+      );
+      let paneName = 'Employers';
+
+      return {
+        menuItem: paneName,
+        render: () => <Tab.Pane>{EmployersPane}</Tab.Pane>
+      }
+    }
+
+    getEmployeesPane = () => {
+      let employeesPane = (
+          <div>
+            <b>All Employees</b>
+            <Grid>
+            {
+                //mapping through all employee address from state variable and setting EmployeeCard Component for each of these addresses.
+                this.state.employee.map((employeeAddress, index) => {
+                    return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} taxRate={this.state.incomeTaxRate} /></Grid.Column>)
+                })
+            }
+            </Grid>
+          </div>
+      );
+      let paneName = 'Employees';
+
+      return {
+        menuItem: paneName,
+        render: () => <Tab.Pane>{employeesPane}</Tab.Pane>
+      }
+    }
+
+    getChangeTaxRatePane = () => {
+      let ChangeTaxRatePane = (
+            <ChangeTaxRate taxChainContract={this.props.taxChainContract} userAddress={this.props.userAddress} />
+      );
+      let paneName = 'Change Tax Rate';
+
+      return {
+        menuItem: paneName,
+        render: () => <Tab.Pane>{ChangeTaxRatePane}</Tab.Pane>
+      }
+    }
+
+    getAddIRSAddrPane = () => {
+      let AddIRSAddrPane = (
+          <div>
+            Coming soon :)
+          </div>
+      );
+
+      let paneName = 'Add New IRS Account';
+
+      return {
+        menuItem: paneName,
+        render: () => <Tab.Pane>{AddIRSAddrPane}</Tab.Pane>
+      }
+    }
+
     render() {
         let allPanes = [
             this.getOverviewPane(),
-            this.getEmployeesPane()
+            this.getEmployeesPane(),
+            this.getEmployersPane(),
+            this.getChangeTaxRatePane(),
+            this.getAddIRSAddrPane(),
         ];
         return (
             <div>
                 <Segment hidden={this.state.errorMessage === ""}>
                   {this.state.errorMessage}
                 </Segment>
-                <Tab panes={allPanes} renderActiveOnly={true} />
+                <Tab panes={allPanes} />
             </div>
+
+
 
         );
     }

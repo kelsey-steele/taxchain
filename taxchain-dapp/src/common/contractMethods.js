@@ -57,6 +57,12 @@ async function getAllEmployeeTotalIncomeListFunc(taxChainContract, msgSenderAddr
     return res;
 }
 
+async function changeIRSTaxRateFunc(taxChainContract, msgSenderAddress, newTaxRate){
+    const res = await taxChainContract.methods.changeTaxRate(newTaxRate)
+                .send({from:msgSenderAddress});
+    return res;
+}
+
 
 export const getMessageSenderType=getMessageSenderTypeFunc;
 export const registerNewUser=registerNewUserFunc;
@@ -67,3 +73,4 @@ export const getAllEmployeeTotalIncomeList=getAllEmployeeTotalIncomeListFunc;
 export const getTaxRate=getTaxRateFunc;
 export const getEmployerIdsForEmployeeAndMonth=getEmployerIdsForEmployeeAndMonthFunc;
 export const employeeAcceptEmployer=employeeAcceptEmployerFunc;
+export const changeIRSTaxRate=changeIRSTaxRateFunc;

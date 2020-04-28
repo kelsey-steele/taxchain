@@ -9,7 +9,7 @@ class EmployeeCard extends Component {
     state = {
       employeeAddr : this.props.addr,
       employeeSalary : this.props.salary,
-      employeeTaxRate : this.props.incomeTaxRate,
+      employeeTaxRate : this.props.taxRate,
       date : new Date(),
       annualTax : Math.round(this.props.salary*(this.props.taxRate/100)*10)/10,
       currentMonthlyTax : this.props.salary*(this.props.taxRate/100)/12,
