@@ -22,12 +22,6 @@ async function getSalaryAmountsForEmployeeAndMonthFunc(taxChainContract, userAdd
     return res;
 }
 
-async function getEmployeeTotalIncomeFunc(taxChainContract, userAddress, msgSenderAddress) {
-    const res = await taxChainContract.methods.getEmployeeTotalIncome(userAddress)
-                .call({from: msgSenderAddress});
-    return res;
-}
-
 async function getTaxRateFunc(taxChainContract) {
     const res = await taxChainContract.methods.getTaxRate().call();
     return res;
@@ -68,6 +62,7 @@ export const getMessageSenderType=getMessageSenderTypeFunc;
 export const registerNewUser=registerNewUserFunc;
 export const getSalaryAmountsForEmployeeAndMonth=getSalaryAmountsForEmployeeAndMonthFunc;
 export const getAllEmployee=getAllEmployeeFunc;
+export const getEmployeeTotalIncome=getEmployeeTotalIncomeFunc;
 export const getAllEmployeeTotalIncomeList=getAllEmployeeTotalIncomeListFunc;
 export const getTaxRate=getTaxRateFunc;
 export const getEmployerIdsForEmployeeAndMonth=getEmployerIdsForEmployeeAndMonthFunc;

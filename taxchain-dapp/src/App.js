@@ -13,6 +13,7 @@ import Register from "./pages/register";
 import Employee from "./pages/employee";
 import IRS from "./pages/irs"
 import MenuBar from "./components/menu";
+import Popup from './components/employeePopup'; 
 
 //
 //  This is the main application page; routing is handled to render other pages in the application
