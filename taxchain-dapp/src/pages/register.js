@@ -7,7 +7,8 @@ class Register extends Component {
     state = {
         selectedType : "employee",
         registerMessageVisible : true,
-        errorMessage: ""
+        errorMessage: "",
+        doButtonLoading: false
     }
     handleRadioChange = (e, { value }) => this.setState({ selectedType:value })
     handleRegisterMessageDismiss = () => {
@@ -36,17 +37,20 @@ class Register extends Component {
 
     handleSubmit = async () => {
         try {
+            this.setState({doButtonLoading: true});
             await registerNewUser(this.props.taxChainContract, this.props.userAddress, this.state.selectedType, this.props.userAddress);
             this.setState({
-                errorMessage: this.getSuccessfulRegistrationMessage()
+                errorMessage: this.getSuccessfulRegistrationMessage(),
+                doButtonLoading: false
             })
             setTimeout(() => {
                 window.location.reload();
-            });
+            }, 1500);
         } catch(err) {
             console.log(err);
             this.setState({
-                errorMessage: this.getFailedRegistrationMessage(err)
+                errorMessage: this.getFailedRegistrationMessage(err),
+                doButtonLoading: false
             });
         }
     }
@@ -96,7 +100,7 @@ class Register extends Component {
                             onChange={this.handleRadioChange}
                         />
                         </Form.Field>
-                        <Form.Button animated>
+                        <Form.Button animated loading={this.state.doButtonLoading}>
                             <Button.Content visible>Register</Button.Content>
                             <Button.Content hidden>
                                 <Icon fitted size="large" name='user plus' />
