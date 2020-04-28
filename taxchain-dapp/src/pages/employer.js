@@ -36,6 +36,7 @@ class Employer extends Component {
         message: "",
         errorMessage: "",
         loading: false,
+        bottomMsgHidden: true
     };
 
     reInintForm = () => {
@@ -48,6 +49,7 @@ class Employer extends Component {
                 message: "",
                 errorMessage: "",
                 loading: false,
+                bottomMsgHidden: true
             });
         }, 8000);
     }
@@ -67,14 +69,14 @@ class Employer extends Component {
 
     onSubmit = async event => {
         // event.preventDefault();
-        this.setState({ loading: true, errorMessage: "", message: "waiting for blockchain transaction to complete..." });
+        this.setState({ loading: true, errorMessage: "" });
 
         try {
             await addEmployeeSalary(this.props.taxChainContract, this.state.employeeAddress, this.props.userAddress, this.state.salaryYear, this.state.salaryMonth, this.state.salaryAmount, this.props.userAddress);
-            this.setState({ loading: false, message: "Employee received the salary" });
+            this.setState({ loading: false, bottomMsgHidden: false, message: "Employee received the salary" });
         }
         catch (err) {
-            this.setState({ loading: false, errorMessage: err.message, message: "Employer rejected to pay salary to employee" });
+            this.setState({ loading: false, errorMessage: err.message});
         }
         this.reInintForm();
     };
@@ -111,14 +113,21 @@ class Employer extends Component {
                         </Form.Field>
 
                         <Message error header="Oops!" content={this.state.errorMessage} />
+                        
+
                         <Form.Button icon labelPosition='right' loading={this.state.loading}>
                             Make Payment
                             <Icon fitted size="large" name='dollar' />
                         </Form.Button>
                     </Form>
                 </Segment>
-
-
+                
+                <Message success hidden={this.state.bottomMsgHidden}
+                    icon='check'
+                    header={this.state.message}
+                    content=''
+                    size="small"
+                />
             </div>
         );
     }
