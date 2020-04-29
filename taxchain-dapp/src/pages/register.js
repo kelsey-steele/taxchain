@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Form, Radio, Button, Icon, Grid, Message, Tab, Container } from 'semantic-ui-react';
+import { Form, Radio, Button, Icon, Grid, Message, Tab, Statistic } from 'semantic-ui-react';
 import {registerNewUser, getTaxRate, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import {connect} from "react-redux";
 
@@ -131,7 +131,10 @@ class Register extends Component {
 
     getTotalTaxPane = () => {
        let totalTaxPaneContent = (
-            <b>{this.state.totalTax}</b>
+           <Statistic>
+               <Statistic.Label>Total Collections</Statistic.Label>
+               <Statistic.Value>{this.state.totalTax}</Statistic.Value>
+           </Statistic>
        );
         let paneName = "Total tax collection";
         return {
@@ -141,63 +144,11 @@ class Register extends Component {
     }
 
     render() {
-        // let registerMessage = "";
-        // if(this.state.registerMessageVisible)
-        // {
-        //         registerMessage =
-        //         <Message warning
-        //             icon='exclamation triangle'
-        //             header='You are not registered in our system'
-        //             content='Please register to continue'
-        //             color="teal"
-        //             size="small"
-        //             onDismiss={this.handleRegisterMessageDismiss}
-        //         />
-        // }
         let allPanes = [
             this.getRegistrationPane(),
             this.getTotalTaxPane()
         ];
         return (
-            // <Grid centered columns={1}>
-            //     <Grid.Row>
-            //         {registerMessage}
-            //     </Grid.Row>
-            //     <Grid.Row>
-            //         {this.state.errorMessage}
-            //     </Grid.Row>
-            //     <Grid.Row>
-            //         <Form onSubmit={this.handleSubmit}>
-            //             <Form.Field>
-            //                 I am an:
-            //             </Form.Field>
-            //             <Form.Field>
-            //                 <Radio
-            //                     label='Employee'
-            //                     name='employee'
-            //                     value='employee'
-            //                     checked={this.state.selectedType === 'employee'}
-            //                     onChange={this.handleRadioChange}
-            //                 />
-            //             </Form.Field>
-            //             <Form.Field>
-            //             <Radio
-            //                 label='Employer'
-            //                 name='employer'
-            //                 value='employer'
-            //                 checked={this.state.selectedType === 'employer'}
-            //                 onChange={this.handleRadioChange}
-            //             />
-            //             </Form.Field>
-            //             <Form.Button animated loading={this.state.doButtonLoading}>
-            //                 <Button.Content visible>Register</Button.Content>
-            //                 <Button.Content hidden>
-            //                     <Icon fitted size="large" name='user plus' />
-            //                 </Button.Content>
-            //             </Form.Button>
-            //         </Form>
-            //     </Grid.Row>
-            // </Grid>
             <div>
                 <Tab panes={allPanes} renderActiveOnly={true} />
             </div>
