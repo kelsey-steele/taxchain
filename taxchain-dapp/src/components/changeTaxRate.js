@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
-import {connect} from "react-redux";
 import {changeIRSTaxRate} from "../common/contractMethods";
-import { Button, Header, Icon, Form, Message } from "semantic-ui-react";
+import { Button, Icon, Form, Message } from "semantic-ui-react";
 
 
 class changeTaxRate extends Component {

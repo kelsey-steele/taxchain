@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import { Card, Icon, Image } from 'semantic-ui-react'
-import Popup from "reactjs-popup";
+import { Image } from 'semantic-ui-react'
 
 class EmployeePopup extends Component {
     state = {

@@ -6,11 +6,11 @@ async function getMessageSenderTypeFunc(taxChainContract, msgSenderAddress) {
 }
 
 async function registerNewUserFunc(taxChainContract, userAddress,  userType, msgSenderAddress) {
-    if(userType == 'employee') {
+    if(userType === 'employee') {
         await taxChainContract.methods.registerEmployee(userAddress)
         .send({from: msgSenderAddress});
     }
-    else if(userType == 'employer') {
+    else if(userType === 'employer') {
         await taxChainContract.methods.registerEmployer(userAddress)
         .send({from: msgSenderAddress});
     }
@@ -87,7 +87,3 @@ export const getEmployerIdsForEmployeeAndMonthAndYear=getEmployerIdsForEmployeeA
 export const employeeAcceptEmployer=employeeAcceptEmployerFunc;
 export const changeIRSTaxRate=changeIRSTaxRateFunc;
 export const addEmployeeSalary=addEmployeeSalaryFunc;
-
-
-
-

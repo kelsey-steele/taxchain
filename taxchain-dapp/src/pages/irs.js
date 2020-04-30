@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {changeIRSTaxRate, getTaxRate, getAllEmployee, getEmployeeTotalIncome, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
+import { getTaxRate, getAllEmployee, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import EmployeeCard from "../components/employeecard";
 import ChangeTaxRate from "../components/changeTaxRate";
-import {Pagination, Grid, GridColumn, GridRow, Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
+import {Pagination, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
 
 // TODO: implement start date and end Date
 // TODO: Calculate current tax based off start/End
@@ -26,7 +26,6 @@ class IRS extends Component {
         employee:[],
         salaries : [],
         incomeTaxRate : .1,
-        errorMessage : "",
 
         totalEmployers : 0,
         totalEmployees : 0,
