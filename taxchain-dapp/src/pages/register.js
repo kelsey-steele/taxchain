@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Form, Radio, Button, Icon, Grid, Message, Tab, Statistic } from 'semantic-ui-react';
+import {Form, Radio, Button, Icon, Grid, Message, Tab, Statistic, Dropdown, Segment} from 'semantic-ui-react';
 import {registerNewUser, getTaxRate, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import {connect} from "react-redux";
 
@@ -9,17 +9,21 @@ class Register extends Component {
         registerMessageVisible : true,
         errorMessage: "",
         doButtonLoading: false,
-        totalTax : 0
+        salaries: [],
+        taxRate : 0,
+        totalTax : 0,
+        salaryYear : 2020
     }
 
     async componentDidMount() {
-        let salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.props.userAddress);
-        let taxRate = await getTaxRate(this.props.taxChainContract);
-        let allSalary = salary.map(Number);
-        let totalCollectedTax = (allSalary.reduce((a,b) => a+b, 0)) / taxRate;
-        this.setState({
-            totalTax : totalCollectedTax,
-        });
+        // let salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, 2020,  this.props.userAddress);
+        // let taxRate = await getTaxRate(this.props.taxChainContract);
+        // let allSalary = salary.map(Number);
+        // let totalCollectedTax = (allSalary.reduce((a,b) => a+b, 0))  * (taxRate/100);
+        // this.setState({
+        //     salaries:salary,
+        //     taxRate:taxRate
+        // });
     }
 
     handleRadioChange = (e, { value }) => this.setState({ selectedType:value })
@@ -129,12 +133,49 @@ class Register extends Component {
         }
     }
 
+    getYearOptions = () => {
+        let yearOptions = [];
+        for (let y = 2020; y <= 2120; y++) {
+            yearOptions.push({
+                key: y,
+                text: y,
+                value: y
+            });
+        }
+        return yearOptions;
+    }
+
+    changeYear = async (event, {value}) => {
+        let salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, value,  this.props.userAddress);
+        let taxRate = await getTaxRate(this.props.taxChainContract);
+        let allSalary = salary.map(Number);
+        let totalCollectedTax = (allSalary.reduce((a,b) => a+b, 0))  * (taxRate/100);
+        this.setState({
+            totalTax:totalCollectedTax,
+        })
+    }
+
     getTotalTaxPane = () => {
+        let yearOptions = this.getYearOptions();
        let totalTaxPaneContent = (
+           <div>
+           <Segment>
+               <span>Select Year</span>
+               <Dropdown
+                   placeholder='Select Year'
+                   fluid
+                   selection
+                   options={yearOptions}
+                   onChange={this.changeYear}
+               />
+           </Segment>
+           <Segment>
            <Statistic>
                <Statistic.Label>Total Collections</Statistic.Label>
                <Statistic.Value>{this.state.totalTax}</Statistic.Value>
            </Statistic>
+           </Segment>
+           </div>
        );
         let paneName = "Total tax collection";
         return {
