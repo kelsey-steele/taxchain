@@ -69,12 +69,19 @@ async function changeIRSTaxRateFunc(taxChainContract, msgSenderAddress, newTaxRa
     return res;
 }
 
+
+
 async function addEmployeeSalaryFunc(taxChainContract, employeeAddress, employerAddress, year, month, amount, msgSenderAddress) {
     const res = await taxChainContract.methods.addEmployeeSalary(employeeAddress, employerAddress, year, month, amount)
                 .send({from: msgSenderAddress});
     return res;
 }
 
+async function registerIrsAccountFunc(taxChainContract, msgSenderAddress, irsAccount) {
+    const res = await taxChainContract.methods.registerIRS(irsAccount)
+                .send({from: msgSenderAddress});
+    return res;
+}
 
 export const getMessageSenderType=getMessageSenderTypeFunc;
 export const registerNewUser=registerNewUserFunc;
@@ -87,3 +94,4 @@ export const getEmployerIdsForEmployeeAndMonthAndYear=getEmployerIdsForEmployeeA
 export const employeeAcceptEmployer=employeeAcceptEmployerFunc;
 export const changeIRSTaxRate=changeIRSTaxRateFunc;
 export const addEmployeeSalary=addEmployeeSalaryFunc;
+export const registerIrsAccount=registerIrsAccountFunc;

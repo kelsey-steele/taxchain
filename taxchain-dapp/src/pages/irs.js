@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import { getTaxRate, getAllEmployee, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import EmployeeCard from "../components/employeecard";
 import ChangeTaxRate from "../components/changeTaxRate";
+import AddIRSAddr from "../components/addIrsAdd";
 import {Pagination, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
 
 // TODO: implement start date and end Date
@@ -10,10 +11,6 @@ import {Pagination, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab }
 // TODO: implement employer count
 // TODO: ability to add IRS account
 // TODO: add page numbers to employees
-// TODO: have all tabs update when changing Tax Rate - redux matter?
-//      the reloading problem was also a problem with the zombie app.
-//      leave it? Add reminder to refresh the page? Add a force reload? tbd
-
 // TODO: change year arg for getAllEmployeeTotalIncomeList method in componentDidMount
 
 
@@ -196,9 +193,7 @@ class IRS extends Component {
 
     getAddIRSAddrPane = () => {
       let AddIRSAddrPane = (
-          <div>
-            Coming soon :)
-          </div>
+          <AddIRSAddr taxChainContract={this.props.taxChainContract} userAddress={this.props.userAddress} />
       );
 
       let paneName = 'Add New IRS Account';
