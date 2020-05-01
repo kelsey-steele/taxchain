@@ -6,9 +6,10 @@ import ChangeTaxRate from "../components/changeTaxRate";
 import AddIRSAddr from "../components/addIrsAdd";
 import {Pagination, Dropdown, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
 
-// TODO: implement employer count
-// TODO: add page numbers to employees
-
+// TODO: implement employer page & count
+// TODO: add page numbers to employees <- can be done though Grid, though haven't been able to get this to work.
+// TODO: add employee / employer search option
+// TODO: add employee payment tables <- this has also been a pain to get working with a popup
 
 class IRS extends Component {
 
@@ -191,7 +192,7 @@ class IRS extends Component {
     getEmployersPane = () => {
       let EmployersPane = (
         <div>
-          meow
+          To be added
         </div>
       );
       let paneName = 'Employers';
@@ -209,13 +210,15 @@ class IRS extends Component {
 
           <div>
             <b>All Employees</b>
-            <Grid>
+            <Grid >
+
             {
                 //mapping through all employee address from state variable and setting EmployeeCard Component for each of these addresses.
                 this.state.employee.map((employeeAddress, index) => {
                     return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} taxRate={this.state.incomeTaxRate} /></Grid.Column>)
                 })
             }
+
             </Grid>
           </div>
       );
