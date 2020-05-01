@@ -53,7 +53,7 @@ class Employee extends Component {
     }
 
     setEmployerIds = async () => {
-        if(this.state.salaryYearSet == false)
+        if(this.state.salaryYearSet === false)
             return;
         let month = 1;
         let allResults = [];
@@ -71,7 +71,7 @@ class Employee extends Component {
     }
 
     setMonthlySalaryAmounts = async () => {
-        if(this.state.salaryYearSet == false)
+        if(this.state.salaryYearSet === false)
             return;
         let month = 1;
         let allResults = [];
@@ -117,7 +117,7 @@ class Employee extends Component {
         );
     }
     getTableBody = () => {
-        if(this.state.salaryYearSet == false)
+        if(this.state.salaryYearSet === false)
             return;
 
         let bodies = [];
@@ -125,10 +125,10 @@ class Employee extends Component {
         let employerIds = this.state.employersIds;
         let employerId, salary;
         for (let month = 0; month < 12; month++) {
-            if (monthlySalaries[month] === undefined || monthlySalaries[month].length == 0)
+            if (monthlySalaries[month] === undefined || monthlySalaries[month].length === 0)
                 continue;
             for (let emplr = 0; emplr < monthlySalaries[month].length; emplr++) {
-                if (employerIds.length == 0 || employerIds[month] === undefined || employerIds[month].length == 0)
+                if (employerIds.length === 0 || employerIds[month] === undefined || employerIds[month].length === 0)
                     employerId = "Not loaded yet";
                 else
                     employerId = this.state.employersIds[month][emplr];
@@ -152,14 +152,14 @@ class Employee extends Component {
     }
 
     setTotalSalary = async () => {
-        if(this.state.salaryYearSet == false)
+        if(this.state.salaryYearSet === false)
             return;
         let income = await getEmployeeTotalIncomeAYear(this.props.taxChainContract, this.props.userAddress, this.state.salaryYear, this.props.userAddress);
         this.setState({ totalSalary: income });
     }
 
     setTotalTax = async () => {
-        if(this.state.salaryYearSet == false)
+        if(this.state.salaryYearSet === false)
             return;
         let taxRate = await getTaxRate(this.props.taxChainContract);
 
@@ -342,7 +342,7 @@ class Employee extends Component {
             let employeeId = result.returnValues.employeeId;
             let month = result.returnValues.month;
             let year = result.returnValues.year;
-            if (employeeId != this.props.userAddress || year != this.state.salaryYear)
+            if (employeeId !== this.props.userAddress || year !== this.state.salaryYear)
                 return;
             console.log("got new salary", amount, employerId, month, result);
             this.addNewSalaryAfterEvent(amount, employerId, month, year);
