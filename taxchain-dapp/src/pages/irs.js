@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import { getTaxRate, getAllEmployee, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
+import {changeIRSTaxRate, getTaxRate, getAllEmployee, getAllEmployer, getEmployeeTotalIncome, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import EmployeeCard from "../components/employeecard";
+import EmployerCard from "../components/employercard"
 import ChangeTaxRate from "../components/changeTaxRate";
 import AddIRSAddr from "../components/addIrsAdd";
 import { Dropdown, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
@@ -18,6 +19,7 @@ class IRS extends Component {
         registerMessageVisible : true,
         errorMessage: "",
         employee:[],
+        employer:[],
         salaries : [],
         incomeTaxRate : .1,
         salaryYear : 2020,
@@ -35,11 +37,14 @@ class IRS extends Component {
         //Get address and salary for all employees when component mount
         try {
             const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
-            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.state.salaryYear, this.props.userAddress);
+            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, 2020, this.props.userAddress);
+            const employerListResult = await getAllEmployer(this.props.taxChainContract, this.props.userAddress);
             this.setState({
                 errorMessage: "Successfully Retrieved Tax Information",
                 employee: result,
+                employer: employerListResult,
                 totalEmployees: result.length,
+                totalEmployers: employerListResult.length,
                 salaries: salary,
             })
 
@@ -190,17 +195,25 @@ class IRS extends Component {
     }
 
     getEmployersPane = () => {
-      let EmployersPane = (
-        <div>
-          To be added
-        </div>
-      );
-      let paneName = 'Employers';
-
-      return {
-        menuItem: paneName,
-        render: () => <Tab.Pane>{EmployersPane}</Tab.Pane>
-      }
+        let employerPane = (
+            <div>
+              <b>All Employers</b>
+              <Grid>
+              {
+                  //mapping through all employer address from state variable and setting EmployerCard Component for each of these addresses.
+                  this.state.employer.map((employerAddress, index) => {
+                      return(<Grid.Column width={5} key={employerAddress}><EmployerCard addr={employerAddress}  /></Grid.Column>)
+                  })
+              }
+              </Grid>
+            </div>
+        );
+        let paneName = 'Employers';
+  
+        return {
+          menuItem: paneName,
+          render: () => <Tab.Pane>{employerPane}</Tab.Pane>
+        }
     }
 
 
