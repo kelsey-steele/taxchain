@@ -1,0 +1,312 @@
+C:\Users\Joy\Documents\cs481\taxchain\Contracts>truffle migrate --network=rinkeby
+
+Compiling your contracts...
+===========================
+> Compiling .\contracts\Employee.sol
+> Compiling .\contracts\IRS.sol
+> Compiling .\contracts\TaxChain.sol
+> Compiling .\contracts\lib\safemath.sol
+> Artifacts written to C:\Users\Joy\Documents\cs481\taxchain\Contracts\build\contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'rinkeby-fork'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+4_taxChain_migration.js
+=======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > block number:        6410590
+   > block timestamp:     1588314284
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             18.019569155
+   > gas used:            2941278
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005882556 ETH
+
+   -------------------------------------
+   > Total cost:         0.005882556 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.005882556 ETH
+
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+4_taxChain_migration.js
+=======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > transaction hash:    0xcdb52d8c33ef48cab7b0ae044aeaf328b13386d02fcfbbdede3d808f0772b943
+   ⠴ Blocks: 0            Seconds: 0Error: Invalid JSON RPC response: ""
+    at Object.InvalidResponse (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\web3-core-helpers\src\errors.js:42:16)
+    at XMLHttpRequest.request.onreadystatechange (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\web3-providers-http\src\index.js:92:32)
+    at XMLHttpRequestEventTarget.dispatchEvent (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request-event-target.ts:44:13)
+    at XMLHttpRequest._setReadyState (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:219:8)
+    at XMLHttpRequest._onHttpRequestError (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:379:8)
+    at ClientRequest.<anonymous> (C:\Users\Joy\Documents\cs481\taxchain\Contracts\node_modules\xhr2-cookies\xml-http-request.ts:266:37)
+    at ClientRequest.emit (events.js:321:20)
+    at TLSSocket.socketErrorListener (_http_client.js:426:9)
+    at TLSSocket.emit (events.js:321:20)
+    at emitErrorNT (internal/streams/destroy.js:92:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+    at processTicksAndRejections (internal/process/task_queues.js:84:21)
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x725268335cEC88ba32915c4a72Ae4C6bBe95a55A
+   > block number:        6410592
+   > block timestamp:     1588314312
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.965126151
+   > gas used:            3016278
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06032556 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.06032556 ETH
+
+
+Summary
+=======
+> Total deployments:   1
+> Final cost:          0.06032556 ETH
+
+
+
+
+C:\Users\Joy\Documents\cs481\taxchain\Contracts>truffle migrate --network rinkeby --reset
+
+Compiling your contracts...
+===========================
+> Compiling .\contracts\Employee.sol
+> Compiling .\contracts\IRS.sol
+> Compiling .\contracts\TaxChain.sol
+> Compiling .\contracts\lib\safemath.sol
+> Artifacts written to C:\Users\Joy\Documents\cs481\taxchain\Contracts\build\contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'rinkeby-fork'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > block number:        6410596
+   > block timestamp:     1588314379
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.958696775
+   > gas used:            2941278
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005882556 ETH
+
+   -------------------------------------
+   > Total cost:         0.005882556 ETH
+
+
+2_taxChain_migration.js
+=======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > block number:        6410598
+   > block timestamp:     1588314411
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.952759537
+   > gas used:            2941278
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005882556 ETH
+
+   -------------------------------------
+   > Total cost:         0.005882556 ETH
+
+
+3_taxChain_migration_2.js
+=========================
+
+   Replacing 'TaxChain'
+   --------------------
+   > block number:        6410600
+   > block timestamp:     1588314435
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.946822299
+   > gas used:            2941278
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005882556 ETH
+
+   -------------------------------------
+   > Total cost:         0.005882556 ETH
+
+
+4_taxChain_migration.js
+=======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > block number:        6410602
+   > block timestamp:     1588314460
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.940885061
+   > gas used:            2941278
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005882556 ETH
+
+   -------------------------------------
+   > Total cost:         0.005882556 ETH
+
+
+Summary
+=======
+> Total deployments:   4
+> Final cost:          0.023530224 ETH
+
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 0x989680
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > transaction hash:    0x53028aeaf1432d32d5bbdc73266e7373fdf4425eef96d53e220de6340d320a25
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x667b5FeAf63C3384732D6e5201e46f59119bC382
+   > block number:        6410603
+   > block timestamp:     1588314477
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.904253771
+   > gas used:            3016278
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06032556 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.06032556 ETH
+
+
+2_taxChain_migration.js
+=======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > transaction hash:    0xc13b7e3f4b11e63e1b79b545d96f4a1c2eeb080ae2bcda736b30342f1c34a880
+   > Blocks: 0            Seconds: 12
+   > contract address:    0x0bb86444C67A1A22C1c64296df84E2A9bbb55D6a
+   > block number:        6410605
+   > block timestamp:     1588314507
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.843381391
+   > gas used:            3016278
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06032556 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.06032556 ETH
+
+
+3_taxChain_migration_2.js
+=========================
+
+   Replacing 'TaxChain'
+   --------------------
+   > transaction hash:    0x251ee5802d3b9cea5a7ccd93d652081708716495e3c1563ec55004055ffa1d18
+   > Blocks: 1            Seconds: 12
+   > contract address:    0x38a650385B1bF4EdCB3d2132712B98b276f9A080
+   > block number:        6410607
+   > block timestamp:     1588314537
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.782509011
+   > gas used:            3016278
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06032556 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.06032556 ETH
+
+
+4_taxChain_migration.js
+=======================
+
+   Replacing 'TaxChain'
+   --------------------
+   > transaction hash:    0x498620bd3502e677a4245194b8e754eadbcaf06d37b0e2c4df0b52640bd0e548
+   > Blocks: 0            Seconds: 12
+   > contract address:    0xB46b474De815cA45672A00Cad063b586Ad66355b
+   > block number:        6410609
+   > block timestamp:     1588314567
+   > account:             0xaf3477FC8696a5b783118a3d28E44cEc862357d3
+   > balance:             17.721636631
+   > gas used:            3016278
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06032556 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.06032556 ETH
+
+
+Summary
+=======
+> Total deployments:   4
+> Final cost:          0.24130224 ETH
+---------------------------------------------------------------------------------------
+contract address:    0xB46b474De815cA45672A00Cad063b586Ad66355b
+oneclickdapp: https://oneclickdapp.com/burma-beatles/
