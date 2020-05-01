@@ -11,7 +11,7 @@ class Employee extends Component {
         employersIds: [],
         totalSalary: 0,
         totalTax: 0,
-        incomeTaxRate: 10,
+        incomeTaxRate: 0,
         loadingFinished: false,
         errorMessage: "",
 

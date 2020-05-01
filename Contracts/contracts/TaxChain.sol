@@ -90,6 +90,10 @@ contract TaxChain is Employee, IRS {
         return employeeIdList;
     }
 
+    function getAllEmployerList() public view returns (address[] memory) {
+        return employerIdList;
+    }
+
     function getAllEmployeeTotalIncomeListAYear(uint _year) public view validYear(_year) returns (uint[] memory) {
         uint[] memory incomeList = employeeTotalIncomeMap[_year];
         for(uint i=0;i<employeeIdList.length;i++){
