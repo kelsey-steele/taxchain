@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Form, Radio, Button, Icon, Grid, Message, Tab, Statistic, Dropdown, Segment} from 'semantic-ui-react';
-import {registerNewUser, getTaxRate, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
+import {Form, Radio, Button, Icon, Grid, Message, Tab, Statistic, Dropdown, Segment, Table, Image, Dimmer, Loader} from 'semantic-ui-react';
+import {registerNewUser, getTaxRate, getAllEmployeeTotalIncomeList, getAllEmployee} from "../common/contractMethods";
 import {connect} from "react-redux";
 
 class Register extends Component {
@@ -9,7 +9,10 @@ class Register extends Component {
         registerMessageVisible : true,
         errorMessage: "",
         doButtonLoading: false,
-        salaries: [],
+        allSalaries: [],
+        allEmployeeIds: [],
+        employeeTaxTableBody : "",
+        allSalaryLoadingFinished: true,
         taxRate : 0,
         totalTax : 0,
         salaryYear : 2020
@@ -145,18 +148,65 @@ class Register extends Component {
         return yearOptions;
     }
 
-    changeYear = async (event, {value}) => {
-        let salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, value,  this.props.userAddress);
-        let taxRate = await getTaxRate(this.props.taxChainContract);
-        let allSalary = salary.map(Number);
-        let totalCollectedTax = (allSalary.reduce((a,b) => a+b, 0))  * (taxRate/100);
-        this.setState({
-            totalTax:totalCollectedTax,
-        })
+    getAllEmployeeTaxHeader = () => {
+        return (
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Employee Id</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='right'>Salary Amount</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='right'>Income Tax Amount</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+        );
     }
+    getAllEmployeeTaxBody = () => {
+        let rows = []
+        for(let index = 0;index<this.state.allSalaries.length;index++)
+            rows.push(this.getOneEmployeeTaxBody(index))
+        return rows
+    }
+    getOneEmployeeTaxBody = (index) => {
+        return (
+            <Table.Row>
+                <Table.Cell>{this.state.allEmployeeIds[index]}</Table.Cell>
+                <Table.Cell textAlign='right'>${this.state.allSalaries[index]}</Table.Cell>
+                <Table.Cell textAlign='right'>${this.calculateTax(this.state.allSalaries[index])}</Table.Cell>
+            </Table.Row>
+        );
+    }
+
+    calculateTax = (salary) => {
+        return salary * this.state.taxRate/100.0;
+    }
+
+    changeYear = async (event, {value}) => {
+        this.setState({allSalaryLoadingFinished: false});
+        let salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, value,  this.props.userAddress);
+        let taxRate_ = await getTaxRate(this.props.taxChainContract);
+        let allSalary = salary.map(Number);
+        let totalCollectedTax = (allSalary.reduce((a,b) => a+b, 0))  * (taxRate_/100.0);
+        let employeeIds = await getAllEmployee(this.props.taxChainContract, this.props.userAddress)
+        await this.setState({
+            totalTax:totalCollectedTax,
+            allSalaries: allSalary,
+            allEmployeeIds: employeeIds,
+            taxRate: taxRate_
+        });
+        this.setState({
+            employeeTaxTableBody: this.getAllEmployeeTaxBody(),
+        })
+        setTimeout(()=>{
+            this.setState({allSalaryLoadingFinished: true});   
+        }, 500);
+    }
+
+
 
     getTotalTaxPane = () => {
         let yearOptions = this.getYearOptions();
+        let header = this.getAllEmployeeTaxHeader()
+        let body = this.state.employeeTaxTableBody;
+        
        let totalTaxPaneContent = (
            <div>
            <Segment>
@@ -170,10 +220,31 @@ class Register extends Component {
                />
            </Segment>
            <Segment>
-           <Statistic>
-               <Statistic.Label>Total Collections</Statistic.Label>
-               <Statistic.Value>{this.state.totalTax}</Statistic.Value>
-           </Statistic>
+                <Statistic.Group widths='two'>
+                    <Statistic>
+                        <Statistic.Value>
+                            <Icon name="dollar" />{this.state.totalTax}
+                        </Statistic.Value>
+                        <Statistic.Label>Total Collection</Statistic.Label>
+                    </Statistic>
+                    <Statistic>
+                        <Statistic.Value>
+                            <Icon name="users" /> {this.state.allSalaries.length}
+                        </Statistic.Value>
+                        <Statistic.Label>Number of employees</Statistic.Label>
+                    </Statistic>
+                </Statistic.Group>
+                <Table compact selectable>
+                    {header}
+                    <Table.Body>
+                        {body}
+                    </Table.Body>
+                </Table>
+                <Dimmer active={!this.state.allSalaryLoadingFinished} inverted>
+                    <Loader inverted active={!this.state.allSalaryLoadingFinished}>Loading</Loader>
+                </Dimmer>
+
+                <Image hidden={this.state.allSalaryLoadingFinished} src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
            </Segment>
            </div>
        );
