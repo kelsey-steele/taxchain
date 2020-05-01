@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import getWeb3 from "./utils/getWeb3";
 import initBlockchain from "./utils/initBlockchain";
 
-import { HashRouter, Route } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import { Provider } from "react-redux";
 
@@ -14,7 +14,6 @@ import Employee from "./pages/employee";
 import IRS from "./pages/irs"
 import Employer from "./pages/employer";
 import MenuBar from "./components/menu";
-import Popup from './components/employeePopup'; 
 
 //
 //  This is the main application page; routing is handled to render other pages in the application
@@ -66,13 +65,13 @@ class App extends Component {
 	render() {
 		// let s = await getMessageSenderAddressType()
 		let page = "No page initialized";
-		if (this.state.msgSenderType == "NONE")
+		if (this.state.msgSenderType === "NONE")
 			page = <Register />
-		else if (this.state.msgSenderType == "EMPLOYEE")
+		else if (this.state.msgSenderType === "EMPLOYEE")
 			page = <Employee />
-		else if (this.state.msgSenderType == "IRS")
+		else if (this.state.msgSenderType === "IRS")
 			page = <IRS />
-		else if (this.state.msgSenderType == "EMPLOYER")
+		else if (this.state.msgSenderType === "EMPLOYER")
 			page = <Employer />
 
 

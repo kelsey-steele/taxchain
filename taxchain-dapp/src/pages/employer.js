@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Header, Icon, Form, Message, Segment } from "semantic-ui-react";
+import { Header, Icon, Form, Message, Segment } from "semantic-ui-react";
 import { addEmployeeSalary } from "../common/contractMethods";
 
 
@@ -113,7 +113,7 @@ class Employer extends Component {
                         </Form.Field>
 
                         <Message error header="Oops!" content={this.state.errorMessage} />
-                        
+
 
                         <Form.Button icon labelPosition='right' loading={this.state.loading}>
                             Make Payment
@@ -121,7 +121,7 @@ class Employer extends Component {
                         </Form.Button>
                     </Form>
                 </Segment>
-                
+
                 <Message success hidden={this.state.bottomMsgHidden}
                     icon='check'
                     header={this.state.message}

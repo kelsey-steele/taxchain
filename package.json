@@ -1,0 +1,23 @@
+{
+  "name": "taxchain",
+  "version": "1.0.0",
+  "description": "CS481a3 Term Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KelseySkunberg/taxchain.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KelseySkunberg/taxchain/issues"
+  },
+  "homepage": "https://github.com/KelseySkunberg/taxchain#readme",
+  "dependencies": {
+    "react-paginate": "^6.3.2",
+    "reactjs-popup": "^1.5.0"
+  }
+}

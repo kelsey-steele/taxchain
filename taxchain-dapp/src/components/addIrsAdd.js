@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {changeIRSTaxRate} from "../common/contractMethods";
+import {registerIrsAccount} from "../common/contractMethods";
 import { Button, Icon, Form, Message } from "semantic-ui-react";
 
 
@@ -20,16 +20,16 @@ class changeTaxRate extends Component {
       message: "waiting for blockchain transaction to complete..."
     });
     try {
-      await changeIRSTaxRate(this.props.taxChainContract, this.props.userAddress, this.state.value);
+      await registerIrsAccount(this.props.taxChainContract, this.props.userAddress, this.state.value);
       this.setState({
         loading: false,
-        message: "New Tax Rate has been set for all employees."
+        message: "New IRS account added."
       });
     } catch (err) {
       this.setState({
         loading: false,
         errorMessage: err.message,
-        message: "Problem encountered. Unable to change the Tax Rate."
+        message: "Problem encountered. Unable to add IRS account."
       });
     }
   };
@@ -38,9 +38,9 @@ class changeTaxRate extends Component {
     return (
       <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
-            <label>Set New Tax Rate</label>
+            <label>Add new IRS account</label>
             <input
-              placeholder="Tax Percentage (0 - 100%)"
+              placeholder="0xc11111FB0Bc6F0AB969E3881A610430780C11a1"
               onChange={event =>
                 this.setState({
                   value: event.target.value
@@ -52,7 +52,7 @@ class changeTaxRate extends Component {
           <Message error header="Oops!" content={this.state.errorMessage} />
           <Button primary type="submit" loading={this.state.loading}>
             <Icon name="check" />
-            Change Tax Rate
+            Add IRS account
           </Button>
           <h2>{this.state.message}</h2>
         </Form>

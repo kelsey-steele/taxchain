@@ -1,21 +1,15 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {changeIRSTaxRate, getTaxRate, getAllEmployee, getEmployeeTotalIncome, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
+import { getTaxRate, getAllEmployee, getAllEmployeeTotalIncomeList} from "../common/contractMethods";
 import EmployeeCard from "../components/employeecard";
 import ChangeTaxRate from "../components/changeTaxRate";
-import {Pagination, Grid, GridColumn, GridRow, Table, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab, Form, Message, Button, Modal, Header } from "semantic-ui-react";
+import AddIRSAddr from "../components/addIrsAdd";
+import { Dropdown, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
 
-// TODO: implement start date and end Date
-// TODO: Calculate current tax based off start/End
-// TODO: implement employer count
-// TODO: ability to add IRS account
-// TODO: add page numbers to employees
-// TODO: have all tabs update when changing Tax Rate - redux matter?
-//      the reloading problem was also a problem with the zombie app.
-//      leave it? Add reminder to refresh the page? Add a force reload? tbd
-
-// TODO: change year arg for getAllEmployeeTotalIncomeList method in componentDidMount
-
+// TODO: implement employer page & count
+// TODO: add page numbers to employees <- can be done though Grid, though haven't been able to get this to work.
+// TODO: add employee / employer search option
+// TODO: add employee payment tables <- this has also been a pain to get working with a popup
 
 class IRS extends Component {
 
@@ -26,7 +20,9 @@ class IRS extends Component {
         employee:[],
         salaries : [],
         incomeTaxRate : .1,
-        errorMessage : "",
+        salaryYear : 2020,
+        false : false,
+        loadingFinished: "",
 
         totalEmployers : 0,
         totalEmployees : 0,
@@ -39,7 +35,7 @@ class IRS extends Component {
         //Get address and salary for all employees when component mount
         try {
             const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
-            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, 2020, this.props.userAddress);
+            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.state.salaryYear, this.props.userAddress);
             this.setState({
                 errorMessage: "Successfully Retrieved Tax Information",
                 employee: result,
@@ -59,6 +55,43 @@ class IRS extends Component {
         setTimeout(() => {
             this.setState({ loadingFinished: true });
         }, 1000);
+    }
+
+    getYearOptions = () => {
+        let yearOptions = [];
+        for (let y = 2020; y <= 2120; y++) {
+            yearOptions.push({
+                key: y,
+                text: y,
+                value: y
+            });
+        }
+        return yearOptions;
+    }
+
+    changeYear = async(event, {value}) => {
+        await this.setState({
+            salaryYear: value,
+            salaryYearSet: true
+        });
+        await this.downloadData();
+    }
+
+    downloadData = async() => {
+        this.setState({
+            loadingFinished: false
+        });
+        const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
+        const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.state.salaryYear, this.props.userAddress);
+        this.setState({
+            employee: result,
+            salaries: salary,
+        })
+        await this.setTotalIncomeTax();
+        setTimeout(() => {
+            this.setState({ loadingFinished: true });
+        }, 300);
+
     }
 
     setTaxRate = async () => {
@@ -81,10 +114,19 @@ class IRS extends Component {
     }
 
     getOverviewPane = () => {
+      let yearOptions = this.getYearOptions();
       let OverviewPane = (
         <div>
-
-
+        <Segment>
+            <span>Select Year</span>
+            <Dropdown
+                placeholder='2020'
+                fluid
+                selection
+                options={yearOptions}
+                onChange={this.changeYear}
+            />
+        </Segment>
         <Segment>
             <Statistic.Group widths='two'>
 
@@ -150,7 +192,7 @@ class IRS extends Component {
     getEmployersPane = () => {
       let EmployersPane = (
         <div>
-          meow
+          To be added
         </div>
       );
       let paneName = 'Employers';
@@ -161,17 +203,22 @@ class IRS extends Component {
       }
     }
 
+
     getEmployeesPane = () => {
+      let yearOptions = this.getYearOptions();
       let employeesPane = (
+
           <div>
             <b>All Employees</b>
-            <Grid>
+            <Grid >
+
             {
                 //mapping through all employee address from state variable and setting EmployeeCard Component for each of these addresses.
                 this.state.employee.map((employeeAddress, index) => {
                     return(<Grid.Column width={5} key={employeeAddress}><EmployeeCard addr={employeeAddress} salary={this.state.salaries[index]} taxRate={this.state.incomeTaxRate} /></Grid.Column>)
                 })
             }
+
             </Grid>
           </div>
       );
@@ -197,9 +244,7 @@ class IRS extends Component {
 
     getAddIRSAddrPane = () => {
       let AddIRSAddrPane = (
-          <div>
-            Coming soon :)
-          </div>
+          <AddIRSAddr taxChainContract={this.props.taxChainContract} userAddress={this.props.userAddress} />
       );
 
       let paneName = 'Add New IRS Account';
@@ -219,6 +264,7 @@ class IRS extends Component {
             this.getAddIRSAddrPane(),
         ];
         return (
+
             <div>
                 <Segment hidden={this.state.errorMessage === ""}>
                   {this.state.errorMessage}
