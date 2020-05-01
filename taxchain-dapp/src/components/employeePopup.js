@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Dimmer, Loader, Icon, Statistic, Form, Header, Message, Image, Segment, Table } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 
 class EmployeePopup extends Component {
     state = {

@@ -4,7 +4,7 @@ import { getTaxRate, getAllEmployee, getAllEmployeeTotalIncomeList} from "../com
 import EmployeeCard from "../components/employeecard";
 import ChangeTaxRate from "../components/changeTaxRate";
 import AddIRSAddr from "../components/addIrsAdd";
-import {Pagination, Dropdown, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
+import { Dropdown, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
 
 // TODO: implement employer page & count
 // TODO: add page numbers to employees <- can be done though Grid, though haven't been able to get this to work.
