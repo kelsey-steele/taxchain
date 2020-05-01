@@ -4,14 +4,10 @@ import { getTaxRate, getAllEmployee, getAllEmployeeTotalIncomeList} from "../com
 import EmployeeCard from "../components/employeecard";
 import ChangeTaxRate from "../components/changeTaxRate";
 import AddIRSAddr from "../components/addIrsAdd";
-import {Pagination, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
+import {Pagination, Dropdown, Grid, Segment, Dimmer, Loader, Image, Icon, Statistic, Tab } from "semantic-ui-react";
 
-// TODO: implement start date and end Date
-// TODO: Calculate current tax based off start/End
 // TODO: implement employer count
-// TODO: ability to add IRS account
 // TODO: add page numbers to employees
-// TODO: change year arg for getAllEmployeeTotalIncomeList method in componentDidMount
 
 
 class IRS extends Component {
@@ -23,6 +19,9 @@ class IRS extends Component {
         employee:[],
         salaries : [],
         incomeTaxRate : .1,
+        salaryYear : 2020,
+        false : false,
+        loadingFinished: "",
 
         totalEmployers : 0,
         totalEmployees : 0,
@@ -35,7 +34,7 @@ class IRS extends Component {
         //Get address and salary for all employees when component mount
         try {
             const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
-            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, 2020, this.props.userAddress);
+            const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.state.salaryYear, this.props.userAddress);
             this.setState({
                 errorMessage: "Successfully Retrieved Tax Information",
                 employee: result,
@@ -55,6 +54,43 @@ class IRS extends Component {
         setTimeout(() => {
             this.setState({ loadingFinished: true });
         }, 1000);
+    }
+
+    getYearOptions = () => {
+        let yearOptions = [];
+        for (let y = 2020; y <= 2120; y++) {
+            yearOptions.push({
+                key: y,
+                text: y,
+                value: y
+            });
+        }
+        return yearOptions;
+    }
+
+    changeYear = async(event, {value}) => {
+        await this.setState({
+            salaryYear: value,
+            salaryYearSet: true
+        });
+        await this.downloadData();
+    }
+
+    downloadData = async() => {
+        this.setState({
+            loadingFinished: false
+        });
+        const result = await getAllEmployee(this.props.taxChainContract, this.props.userAddress);
+        const salary = await getAllEmployeeTotalIncomeList(this.props.taxChainContract, this.state.salaryYear, this.props.userAddress);
+        this.setState({
+            employee: result,
+            salaries: salary,
+        })
+        await this.setTotalIncomeTax();
+        setTimeout(() => {
+            this.setState({ loadingFinished: true });
+        }, 300);
+
     }
 
     setTaxRate = async () => {
@@ -77,10 +113,19 @@ class IRS extends Component {
     }
 
     getOverviewPane = () => {
+      let yearOptions = this.getYearOptions();
       let OverviewPane = (
         <div>
-
-
+        <Segment>
+            <span>Select Year</span>
+            <Dropdown
+                placeholder='2020'
+                fluid
+                selection
+                options={yearOptions}
+                onChange={this.changeYear}
+            />
+        </Segment>
         <Segment>
             <Statistic.Group widths='two'>
 
@@ -157,8 +202,11 @@ class IRS extends Component {
       }
     }
 
+
     getEmployeesPane = () => {
+      let yearOptions = this.getYearOptions();
       let employeesPane = (
+
           <div>
             <b>All Employees</b>
             <Grid>
@@ -213,6 +261,7 @@ class IRS extends Component {
             this.getAddIRSAddrPane(),
         ];
         return (
+
             <div>
                 <Segment hidden={this.state.errorMessage === ""}>
                   {this.state.errorMessage}

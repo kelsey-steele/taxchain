@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Image } from 'semantic-ui-react'
+import { Dimmer, Loader, Icon, Statistic, Form, Header, Message, Image, Segment, Table } from 'semantic-ui-react'
 
 class EmployeePopup extends Component {
     state = {
@@ -15,14 +15,9 @@ class EmployeePopup extends Component {
             <div>
               <br/>
               <b>  Address: </b>{this.props.employeeInfo.employeeAddr}<br/>
-              <b>  Employer: </b>TODO<br/>
-              <b>  Start Date: </b>TODO<br/>
-              <b>  End Date: </b>-<br/>
-              <b>  Salary: </b>${this.props.employeeInfo.employeeSalary}<br/>
-              <b>  Annual Tax Amount: </b>${this.props.employeeInfo.annualTax}<br/>
-              <b>  Current Tax Amount: </b>${Math.round(this.props.employeeInfo.currentMonthlyTax*this.state.date.getMonth()*10)/10}<br/>
+              <b>  Salary received: </b>${this.props.employeeInfo.annualTax}<br/>
+              <b>  Tax Amount: </b>${Math.round(this.props.employeeInfo.currentMonthlyTax*this.state.date.getMonth()*10)/10}<br/>
               <b>  Tax Rate: </b>{this.props.employeeInfo.employeeTaxRate}%<br/>
-
             </div>
           </row>
         );

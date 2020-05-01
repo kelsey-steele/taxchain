@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/KelseySkunberg/taxchain#readme",
   "dependencies": {
+    "react-paginate": "^6.3.2",
     "reactjs-popup": "^1.5.0"
   }
 }
