@@ -333,6 +333,7 @@ class Employee extends Component {
             employeeId: this.props.userAddress,
             year: this.state.salaryYear
         }, (err, result) => {
+            // console.log("found event", result)
             if (err) {
                 console.log("Error happened while litening to event", err);
                 return;
@@ -342,9 +343,11 @@ class Employee extends Component {
             let employeeId = result.returnValues.employeeId;
             let month = result.returnValues.month;
             let year = result.returnValues.year;
-            if (employeeId !== this.props.userAddress || year !== this.state.salaryYear)
+            // console.log("got new salary", amount, employeeId, month, result);
+            // console.log("user address", this.props.userAddress, "sal year", this.state.salaryYear)
+            if (employeeId != this.props.userAddress || year != this.state.salaryYear)
                 return;
-            console.log("got new salary", amount, employerId, month, result);
+            // console.log("got here")
             this.addNewSalaryAfterEvent(amount, employerId, month, year);
         });
     }
