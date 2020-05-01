@@ -196,4 +196,9 @@ contract("TaxChain", (accounts) => {
         expect(result).to.be.equal("IRS");
     })
 
+    it("All employers should be listed", async() => {
+        const result = await contractTaxChain.getAllEmployerList({from: employee1});
+        expect(result).to.be.eql([employer1, employer2]);
+    })
+
 })
